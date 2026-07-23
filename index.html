@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="CAESI — La plataforma moderna para automatizar el cumplimiento empresarial. NOMs, auditorías, expedientes STPS y portal cliente en tiempo real."/>
+<title>CAESI | Centro Inteligente de Cumplimiento Empresarial</title>
+
+<!-- ═══════ GA4 — Reemplaza G-XXXXXXXXXX con tu Measurement ID real ═══════ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX', { 'send_page_view': true });
+  // Helper para disparar eventos custom desde cualquier lugar
+  window.trackEvent = function(name, params){
+    try { gtag('event', name, params || {}); } catch(e){}
+    // También lo guardamos en consola para debugging
+    try { console.log('[CAESI-track]', name, params || {}); } catch(e){}
+  };
+</script>
+<!-- ═══════ Fin GA4 ═══════ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://api.rss2json.com">
+<link rel="dns-prefetch" href="https://i.ytimg.com">
+<link rel="dns-prefetch" href="https://www.youtube.com">
+<link rel="preconnect" href="https://videos.pexels.com" crossorigin>
+<link rel="preconnect" href="https://images.pexels.com" crossorigin>
+<link rel="preload" as="image" href="foto.webp" fetchpriority="low">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Onest:wght@300;400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Onest:wght@300;400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{
+  --bg:#fff;--bg-soft:#f6f7f9;--ink:#0a1628;--ink-2:#0f172a;--muted:#64748b;--muted-2:#94a3b8;--line:#e5e7eb;
+  --cyan:#0ea5e9;--teal:#0d9488;--gold:#c8a96a;--gold-warm:#e0b97a;--success:#059669;--warn:#d97706;
+  --r-sm:10px;--r-md:16px;--r-lg:24px;--r-pill:999px;
+  --shadow-card:0 1px 2px rgba(15,23,42,.04),0 12px 32px -12px rgba(15,23,42,.12);
+  --shadow-deep:0 30px 80px -20px rgba(10,22,40,.35),0 8px 24px -8px rgba(10,22,40,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:"ss01","cv11"}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.serif{font-family:'Instrument Serif','Times New Roman',serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
+.eyebrow-serif{font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;color:var(--ink);letter-spacing:-.01em;margin-bottom:18px;opacity:.9}
+.eyebrow{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.18em;margin-bottom:18px}
+.display{font-size:clamp(46px,7.4vw,104px);font-weight:800;letter-spacing:-.045em;line-height:.98;color:var(--ink)}
+.h2{font-size:clamp(34px,4.4vw,62px);font-weight:800;letter-spacing:-.035em;line-height:1.04;color:var(--ink)}
+.h2 em,.display em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;letter-spacing:-.025em}
+.lede{font-size:clamp(16px,1.3vw,19px);color:var(--muted);line-height:1.65;max-width:520px}
+.lede-center{margin:0 auto;text-align:center}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.wrap-narrow{max-width:920px;margin:0 auto;padding:0 32px}
+.center{text-align:center}
+#nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid transparent;transition:.3s}
+#nav.scrolled{border-bottom-color:var(--line);background:rgba(255,255,255,.92)}
+.nav-inner{max-width:1240px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:inline-flex;align-items:center;gap:10px;font-size:20px;font-weight:800;letter-spacing:-.04em;color:var(--ink);text-decoration:none}
+.logo-img{height:42px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(15,23,42,.18))}
+/* En el nav blanco oscurecemos un poco el plateado para que tenga buen contraste */
+#nav .logo-img{filter:brightness(.55) contrast(1.25) drop-shadow(0 2px 4px rgba(15,23,42,.15))}
+/* En el footer oscuro (fondo navy) lo dejamos brillante */
+footer .logo-img{height:46px;filter:brightness(1.15) contrast(1.05) drop-shadow(0 2px 8px rgba(255,255,255,.10))}
+.logo-mark{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--ink) 0%,var(--cyan) 100%);position:relative}
+.logo-mark::after{content:"";position:absolute;inset:6px;border-radius:4px;background:linear-gradient(135deg,var(--gold-warm),transparent 60%);opacity:.9}
+.nav-links{display:flex;gap:32px}
+.nav-links a{font-size:14px;font-weight:500;color:var(--ink);opacity:.75;transition:.2s}
+.nav-links a:hover{opacity:1}
+
+/* ── Botón hamburguesa + menú desplegable ── */
+.nav-right{display:flex;align-items:center;gap:14px}
+.menu-toggle{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.65);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;cursor:pointer;transition:.25s;padding:0;backdrop-filter:saturate(180%) blur(8px);-webkit-backdrop-filter:saturate(180%) blur(8px)}
+.menu-toggle:hover{background:#fff;border-color:var(--ink);box-shadow:0 6px 18px -6px rgba(15,23,42,.18)}
+.menu-toggle span{display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .25s}
+.menu-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.menu-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.menu-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.menu-panel{position:fixed;top:78px;right:14px;width:280px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 60px -12px rgba(15,23,42,.25),0 4px 12px -4px rgba(15,23,42,.10);overflow:hidden;opacity:0;pointer-events:none;transform:translateY(-12px) scale(.98);transform-origin:top right;transition:opacity .25s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1);z-index:998}
+.menu-panel.open{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+.menu-inner{display:flex;flex-direction:column;padding:10px 0}
+.menu-inner a{display:block;padding:13px 22px;font-size:14.5px;font-weight:500;color:var(--ink);opacity:.85;transition:.18s;border-left:3px solid transparent}
+.menu-inner a:hover{background:#fafbfc;opacity:1;border-left-color:var(--teal);padding-left:26px}
+.menu-sep{height:1px;background:var(--line);margin:8px 18px}
+.menu-cta{display:flex !important;align-items:center;gap:12px;padding:14px 22px !important;background:linear-gradient(135deg,rgba(13,148,136,.06),rgba(14,165,233,.05));margin:4px 12px 6px;border-radius:10px;border-left:3px solid var(--teal) !important;opacity:1 !important}
+.menu-cta:hover{background:linear-gradient(135deg,rgba(13,148,136,.12),rgba(14,165,233,.10)) !important;padding-left:22px !important}
+.menu-cta .mc-ico{font-size:20px;flex:0 0 auto}
+.menu-cta b{font-size:14px;color:var(--ink)}
+.menu-cta small{font-size:11.5px;color:var(--muted);font-weight:500}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px 13px 24px;border-radius:var(--r-pill);font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;transition:.25s;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);white-space:nowrap}
+.btn .arrow{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;display:inline-flex;align-items:center;justify-content:center;transition:.25s}
+.btn:hover{background:var(--ink);color:#fff;transform:translateY(-1px);box-shadow:0 12px 26px -10px rgba(10,22,40,.45)}
+.btn:hover .arrow{background:#fff;color:var(--ink);transform:translateX(3px)}
+.btn-solid{background:var(--ink);color:#fff}
+.btn-solid .arrow{background:#fff;color:var(--ink)}
+.btn-solid:hover{background:#000}
+.btn-ghost{border-color:rgba(255,255,255,.35);color:#fff}
+.btn-ghost .arrow{background:#fff;color:var(--ink)}
+.btn-ghost:hover{background:#fff;color:var(--ink)}
+.btn-gold{border-color:var(--gold);color:var(--ink);background:rgba(200,169,106,.08)}
+.btn-gold .arrow{background:var(--ink);color:var(--gold-warm)}
+.btn-gold:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-sm{padding:9px 16px 9px 18px;font-size:11.5px}
+.btn-sm .arrow{width:20px;height:20px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+#hero{position:relative;padding:160px 0 60px;overflow:hidden}
+.hero-copy{text-align:center;max-width:980px;margin:0 auto;padding:0 16px}
+.hero-sub{color:var(--muted);font-size:clamp(15px,1.2vw,18px);max-width:580px;margin:26px auto 36px;line-height:1.6}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(13,148,136,.08);color:var(--teal);font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;margin-bottom:24px;border:1px solid rgba(13,148,136,.2);letter-spacing:.02em}
+.hb-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(13,148,136,.5);animation:pulse 2.2s infinite}
+.hero-trust{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;justify-content:center;margin:40px auto 0;padding-top:36px;border-top:1px solid var(--line);max-width:820px}
+.ht-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.ht-num{font-size:clamp(22px,2.2vw,28px);font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1}
+.ht-lbl{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.01em;line-height:1.3}
+@media(max-width:640px){.hero-trust{grid-template-columns:1fr 1fr;gap:20px}}
+.hero-visual{position:relative;margin:80px auto 0;max-width:1080px;padding:0 16px}
+.hero-stage{position:relative;border-radius:32px;padding:60px 40px 0;overflow:hidden;background:radial-gradient(120% 90% at 80% 10%,rgba(224,185,122,.22),transparent 60%),radial-gradient(110% 100% at 20% 90%,rgba(13,148,136,.30),transparent 55%),radial-gradient(140% 100% at 50% 50%,rgba(14,165,233,.45),transparent 60%),linear-gradient(135deg,#0a1628 0%,#11243f 45%,#0d9488 100%);min-height:520px}
+.hero-stage::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);opacity:.5}
+.mockup{position:relative;max-width:900px;margin:0 auto;background:#fff;border-radius:18px 18px 0 0;box-shadow:var(--shadow-deep);transform:translateY(20px);overflow:hidden;border:1px solid rgba(255,255,255,.5)}
+.mock-bar{display:flex;align-items:center;gap:8px;padding:12px 18px;background:#f8fafc;border-bottom:1px solid var(--line)}
+.mock-dot{width:10px;height:10px;border-radius:50%;background:#cbd5e1}
+.mock-url{margin-left:14px;font-size:12px;color:var(--muted);font-weight:500;background:#fff;border:1px solid var(--line);padding:4px 12px;border-radius:999px}
+.mock-body{display:grid;grid-template-columns:200px 1fr;min-height:380px}
+.mock-side{padding:22px 14px;background:#f8fafc;border-right:1px solid var(--line)}
+.mock-side .brand{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--ink);margin-bottom:22px;display:flex;align-items:center;gap:8px}
+.mock-side .brand::before{content:"";width:14px;height:14px;border-radius:4px;background:linear-gradient(135deg,var(--ink),var(--cyan))}
+.mock-nav-item{font-size:12.5px;color:var(--muted);padding:8px 10px;border-radius:8px;display:flex;align-items:center;gap:9px;margin-bottom:2px}
+.mock-nav-item.is-active{background:#eef6fb;color:var(--ink);font-weight:600}
+.mock-dot-i{width:6px;height:6px;border-radius:50%;background:var(--muted-2)}
+.mock-nav-item.is-active .mock-dot-i{background:var(--cyan);box-shadow:0 0 0 4px rgba(14,165,233,.18)}
+.mock-main{padding:26px 28px;display:flex;flex-direction:column;gap:22px}
+.mock-h{display:flex;justify-content:space-between;align-items:flex-start}
+.mock-h h4{font-size:16px;font-weight:700}
+.mock-h p{font-size:12px;color:var(--muted);margin-top:2px}
+.pill{font-size:11px;font-weight:700;padding:5px 12px;border-radius:999px;background:#dcfce7;color:#166534}
+.pill.warn{background:#fef3c7;color:#92400e}
+.pill.brand{background:#e0f2fe;color:#075985}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kpi{padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.kpi-v{font-size:22px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.kpi-l{font-size:11px;color:var(--muted);margin-top:4px}
+.kpi.accent .kpi-v{color:var(--teal)}
+.kpi.warn .kpi-v{color:var(--warn)}
+.progress-row{display:flex;flex-direction:column;gap:10px}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12.5px}
+.pbar{flex:1;height:6px;background:#f1f5f9;border-radius:999px;overflow:hidden}
+.pbar>span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--teal))}
+.pval{font-weight:700;font-size:12px;color:var(--ink);width:38px;text-align:right}
+.logos{padding:30px 0 80px;border-top:1px solid var(--line);margin-top:40px}
+.logos-inner{display:flex;gap:48px;flex-wrap:wrap;align-items:center;justify-content:center;opacity:.55}
+.logos-inner span{font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;color:var(--ink)}
+.logos-inner b{font-weight:800;font-size:19px;font-family:'Inter',sans-serif;letter-spacing:-.02em}
+.section{padding:130px 0}
+.split{display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:end}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:80px}
+.feat h4{font-size:16px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
+.feat p{font-size:14px;color:var(--muted);line-height:1.65}
+.feat-num{font-size:12px;color:var(--muted-2);margin-bottom:18px;letter-spacing:.12em;font-weight:600}
+.gradient-band{position:relative;padding:110px 0 130px;background:radial-gradient(80% 60% at 80% 10%,rgba(224,185,122,.16),transparent 60%),radial-gradient(70% 60% at 10% 90%,rgba(13,148,136,.25),transparent 60%),linear-gradient(135deg,#0a1628 0%,#11243f 50%,#0a1628 100%);color:#fff;overflow:hidden}
+.gradient-band::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:26px 26px;-webkit-mask-image:radial-gradient(ellipse at center,black 20%,transparent 75%);mask-image:radial-gradient(ellipse at center,black 20%,transparent 75%);opacity:.4}
+.gradient-band .h2,.portal-band .h2,.cta-band .h2{color:#fff}
+.gradient-band .eyebrow-serif,.portal-band .eyebrow-serif,.cta-band .eyebrow-serif{color:var(--gold-warm)}
+.gradient-band .lede,.portal-band .lede,.cta-band .lede{color:rgba(255,255,255,.7)}
+.compare{margin-top:70px;display:grid;grid-template-columns:1fr 1fr;gap:28px;position:relative;z-index:2}
+.compare-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);backdrop-filter:blur(8px);border-radius:22px;padding:34px}
+.compare-card.is-good{background:linear-gradient(160deg,rgba(13,148,136,.18),rgba(14,165,233,.10) 60%,rgba(255,255,255,.02));border-color:rgba(14,165,233,.35)}
+.compare-card .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.55);margin-bottom:14px}
+.compare-card.is-good .lbl{color:var(--gold-warm)}
+.compare-card h3{font-size:26px;font-weight:700;letter-spacing:-.025em;margin-bottom:24px}
+.ci-list{display:flex;flex-direction:column;gap:16px}
+.ci-item{display:flex;gap:14px;align-items:flex-start}
+.ci-icon{width:32px;height:32px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700}
+.ci-icon.bad{background:rgba(239,68,68,.12);color:#fca5a5}
+.ci-icon.ok{background:rgba(13,148,136,.18);color:#5eead4}
+.ci-text{font-size:14.5px;line-height:1.55;color:rgba(255,255,255,.85)}
+.ci-text b{color:#fff;font-weight:700;display:block;margin-bottom:2px;font-size:15px}
+.srv-head{display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:end;margin-bottom:64px}
+.srv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.srv{grid-column:span 1;position:relative;padding:30px;border-radius:20px;background:var(--bg-soft);border:1px solid var(--line);min-height:220px;display:flex;flex-direction:column;justify-content:space-between;transition:.35s;overflow:hidden}
+.srv h4{font-size:17px;font-weight:700;letter-spacing:-.015em}
+.srv p{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+.srv .srv-tag{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2)}
+.srv:hover{transform:translateY(-4px);border-color:var(--ink)}
+.srv.big{grid-column:span 2;min-height:280px;background:var(--ink);color:#fff;border-color:var(--ink)}
+.srv.big p{color:rgba(255,255,255,.7)}
+.srv.big .srv-tag{color:var(--gold-warm)}
+.srv.big .srv-vis{position:absolute;right:-20px;bottom:-20px;width:220px;height:220px;background:radial-gradient(circle at 30% 30%,rgba(14,165,233,.5),transparent 60%),radial-gradient(circle at 70% 70%,rgba(224,185,122,.35),transparent 55%);filter:blur(20px);border-radius:50%;opacity:.9}
+.srv.gold{background:linear-gradient(150deg,#fdf6e3 0%,#faecd2 100%);border-color:rgba(200,169,106,.5)}
+.srv.gold .srv-tag{color:#8a6a2c}
+.srv.teal{background:linear-gradient(150deg,#ecfeff 0%,#cffafe 100%);border-color:rgba(13,148,136,.3)}
+.srv.teal .srv-tag{color:var(--teal)}
+.multas-band{position:relative;padding:130px 0;background:radial-gradient(70% 60% at 90% 20%,rgba(239,68,68,.18),transparent 60%),radial-gradient(60% 70% at 10% 90%,rgba(224,185,122,.20),transparent 60%),linear-gradient(135deg,#0a1628 0%,#1a0f12 60%,#0a1628 100%);color:#fff;overflow:hidden}
+.multas-band::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:24px 24px;-webkit-mask-image:radial-gradient(ellipse at center,black 25%,transparent 75%);mask-image:radial-gradient(ellipse at center,black 25%,transparent 75%);opacity:.4}
+.multas-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center}
+.multas-stats{margin-top:30px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
+.ms-item{display:flex;flex-direction:column;gap:4px}
+.ms-num{font-size:clamp(24px,2.4vw,32px);letter-spacing:-.03em;color:var(--gold-warm);line-height:1;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.ms-lbl{font-size:12px;color:rgba(255,255,255,.65);line-height:1.4}
+.multas-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px);border-radius:24px;padding:36px;box-shadow:0 30px 80px -20px rgba(239,68,68,.20)}
+.mc-tag{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-warm);background:rgba(224,185,122,.10);padding:6px 12px;border-radius:999px;border:1px solid rgba(224,185,122,.25)}
+.mc-amount{margin-top:22px;display:flex;align-items:baseline;gap:14px}
+.mc-cross{font-size:32px;font-weight:700;color:rgba(255,255,255,.45);text-decoration:line-through;letter-spacing:-.025em}
+.mc-final{font-size:54px;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#5eead4;letter-spacing:-.04em}
+.mc-lbl{font-size:14px;color:rgba(255,255,255,.75);margin-top:4px}
+.mc-steps{margin-top:28px;display:flex;flex-direction:column;gap:12px}
+.mc-step{display:flex;align-items:center;gap:14px;font-size:14px;color:rgba(255,255,255,.85)}
+.mc-step .mc-n{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.mc-step.done .mc-n{background:#5eead4;color:var(--ink);border-color:#5eead4}
+.mc-step.done{color:#5eead4;font-weight:600}
+@media(max-width:980px){.multas-grid{grid-template-columns:1fr}}
+.steps-wrap{padding:130px 0;background:var(--bg-soft)}
+.steps-head{text-align:center;max-width:760px;margin:0 auto 80px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;position:relative}
+.step{position:relative}
+.step-n{font-family:'Instrument Serif',serif;font-style:italic;font-size:80px;font-weight:400;color:var(--ink);opacity:.15;line-height:1;letter-spacing:-.04em}
+.step h4{font-size:18px;font-weight:700;margin-top:16px;letter-spacing:-.015em}
+.step p{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.55}
+.step .step-mark{width:8px;height:8px;border-radius:50%;background:var(--ink);margin-top:18px;box-shadow:0 0 0 6px rgba(10,22,40,.06)}
+.portal-band{position:relative;padding:140px 0 160px;background:radial-gradient(60% 50% at 90% 0%,rgba(224,185,122,.18),transparent 60%),radial-gradient(70% 70% at 10% 100%,rgba(13,148,136,.30),transparent 60%),radial-gradient(110% 80% at 50% 50%,rgba(14,165,233,.35),transparent 65%),linear-gradient(135deg,#0a1628 0%,#112842 60%,#0d9488 130%);color:#fff;overflow:hidden}
+.portal-band::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:24px 24px;-webkit-mask-image:radial-gradient(ellipse at center,black 25%,transparent 75%);mask-image:radial-gradient(ellipse at center,black 25%,transparent 75%);opacity:.45}
+.portal-band .h2 em{color:var(--gold-warm)}
+.portal-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:50px}
+.portal-copy ul{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:14px}
+.portal-copy li{display:flex;gap:14px;align-items:center;font-size:15px;color:rgba(255,255,255,.85)}
+.portal-copy li::before{content:"";width:22px;height:22px;border-radius:50%;flex-shrink:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235eead4' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");background-repeat:no-repeat;background-position:center;background-size:14px 14px;border:1px solid rgba(94,234,212,.4);background-color:rgba(255,255,255,.06)}
+.portal-actions{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
+.portal-mock{position:relative;padding:14px;border-radius:22px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px);box-shadow:var(--shadow-deep)}
+.pm-card{background:#fff;color:var(--ink);border-radius:14px;padding:18px}
+.pm-card + .pm-card{margin-top:10px}
+.pm-row{display:flex;justify-content:space-between;align-items:center}
+.pm-title{font-size:14px;font-weight:700;letter-spacing:-.01em}
+.pm-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pm-bar{margin-top:14px;height:8px;background:#f1f5f9;border-radius:999px;overflow:hidden}
+.pm-bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--teal));border-radius:999px}
+.chip{font-size:11px;padding:4px 10px;border-radius:999px;background:#f1f5f9;color:var(--ink-2);font-weight:600}
+.chip.ok{background:#dcfce7;color:#166534}
+.chip.warn{background:#fef3c7;color:#92400e}
+.chip.brand{background:#e0f2fe;color:#075985}
+.pm-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pm-mini{background:linear-gradient(150deg,#f8fafc,#fff);border:1px solid var(--line);border-radius:12px;padding:14px}
+.pm-mini .v{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.pm-mini .l{font-size:11px;color:var(--muted);margin-top:2px;font-weight:600}
+.pm-timeline{display:flex;flex-direction:column;gap:10px}
+.pm-tl{display:flex;gap:10px;align-items:center;font-size:12.5px}
+.pm-tl .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);flex-shrink:0}
+.pm-tl .dot.warn{background:var(--warn)}
+.pm-tl .dot.ok{background:var(--success)}
+.pm-tl .t{color:var(--muted)}
+.wizard-wrap{padding:130px 0;background:#fff}
+.wz-head{text-align:center;max-width:780px;margin:0 auto 60px}
+.wz{max-width:900px;margin:0 auto;background:#fff;border-radius:28px;border:1px solid var(--line);box-shadow:var(--shadow-card);overflow:hidden}
+.wz-top{display:flex;justify-content:space-between;align-items:center;padding:26px 36px;border-bottom:1px solid var(--line);background:var(--bg-soft)}
+.wz-top-left{display:flex;align-items:center;gap:14px}
+.wz-pulse{width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 0 rgba(14,165,233,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(14,165,233,.6)}70%{box-shadow:0 0 0 12px rgba(14,165,233,0)}100%{box-shadow:0 0 0 0 rgba(14,165,233,0)}}
+.wz-engine{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.wz-engine span{color:var(--muted);font-weight:500}
+.wz-step-i{font-size:12px;color:var(--muted);font-weight:600}
+.wz-bar-wrap{height:3px;background:var(--line)}
+.wz-bar{height:100%;background:linear-gradient(90deg,var(--ink),var(--cyan));transition:width .5s cubic-bezier(.16,1,.3,1);width:10%}
+.wz-body{padding:50px 50px 30px;min-height:360px}
+.wz-q{font-size:clamp(24px,2.4vw,32px);font-weight:800;letter-spacing:-.025em;line-height:1.15;margin-bottom:10px}
+.wz-hint{font-size:14.5px;color:var(--muted);margin-bottom:30px}
+.wz-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.wz-opt{padding:16px 18px;border:1px solid var(--line);border-radius:14px;cursor:pointer;font-size:14.5px;font-weight:500;display:flex;align-items:center;gap:12px;transition:.25s;background:#fff}
+.wz-opt::before{content:"";width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);flex-shrink:0;transition:.25s}
+.wz-opt:hover{border-color:var(--ink);transform:translateY(-1px)}
+.wz-opt.sel,.wz-opt.is-selected{border-color:var(--ink);background:var(--ink);color:#fff}
+.wz-opt.sel::before,.wz-opt.is-selected::before{background:var(--gold-warm);border-color:var(--gold-warm);box-shadow:inset 0 0 0 4px var(--ink)}
+
+/* ── Estado: Analizando… (3 segundos entre pasos) ── */
+.wz-analyze{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;min-height:300px;text-align:center}
+.wz-spin{position:relative;width:64px;height:64px;margin-bottom:24px}
+.wz-spin div{position:absolute;inset:0;border:3px solid transparent;border-top-color:var(--cyan);border-radius:50%;animation:wzspin 1s linear infinite}
+.wz-spin div:nth-child(2){border-top-color:var(--gold-warm);animation-duration:1.4s;animation-direction:reverse;inset:8px}
+.wz-spin div:nth-child(3){border-top-color:var(--teal);animation-duration:1.8s;inset:16px}
+@keyframes wzspin{to{transform:rotate(360deg)}}
+.wz-an-title{font-size:18px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.wz-an-msg{margin-top:6px;font-size:14px;color:var(--muted);font-family:'Menlo','Consolas',monospace;min-height:22px;animation:wzfade .4s ease-in-out}
+@keyframes wzfade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.wz-an-bar{margin-top:24px;width:240px;height:4px;background:#eef0f3;border-radius:4px;overflow:hidden}
+.wz-an-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--gold-warm),var(--teal));animation:wzbar 3s linear forwards;border-radius:4px}
+@keyframes wzbar{to{width:100%}}
+
+/* ── Pantalla de resultado del diagnóstico ── */
+.wz-result{padding:0}
+.wzr-hello{font-size:15px;color:var(--muted);margin-bottom:6px}
+.wzr-title{font-size:clamp(22px,2.4vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.18;margin-bottom:8px;color:var(--ink)}
+.wzr-title em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--teal,#0d9488)}
+.wzr-sub{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+.wzr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:30px}
+.wzr-card{background:#fafbfc;border:1px solid var(--line);border-radius:14px;padding:18px 16px;text-align:left}
+.wzr-card.warn{background:linear-gradient(135deg,#FEF2F2,#fff);border-color:rgba(220,38,38,.25)}
+.wzr-num{font-size:clamp(22px,2.2vw,30px);font-weight:900;letter-spacing:-.03em;color:var(--ink);line-height:1.05}
+.wzr-lbl{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-top:6px}
+.wzr-bar{margin-top:10px;height:6px;background:#eef0f3;border-radius:4px;overflow:hidden}
+.wzr-bar span{display:block;height:100%;border-radius:4px;transition:width .8s cubic-bezier(.16,1,.3,1)}
+.wzr-msg{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.4}
+.wzr-section{margin-top:22px}
+.wzr-section h4{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:4px;letter-spacing:-.01em}
+.wzr-section-sub{font-size:13px;color:var(--muted);margin-bottom:14px}
+.wzr-noms{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.wzr-nom{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;transition:.18s}
+.wzr-nom:hover{border-color:var(--ink);transform:translateY(-1px)}
+.wzr-nom.crit{border-left:3px solid #dc2626}
+.wzr-nom.high{border-left:3px solid #d97706}
+.wzr-nom.med{border-left:3px solid #ca8a04}
+.wzr-nom.low{border-left:3px solid #059669}
+.wzr-nom-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.wzr-nom-h b{font-size:12.5px;color:var(--ink);font-weight:800;letter-spacing:.01em}
+.wzr-nom-r{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:999px;letter-spacing:.08em}
+.wzr-nom-r.crit{background:rgba(220,38,38,.12);color:#dc2626}
+.wzr-nom-r.high{background:rgba(217,119,6,.12);color:#d97706}
+.wzr-nom-r.med{background:rgba(202,138,4,.12);color:#ca8a04}
+.wzr-nom-r.low{background:rgba(5,150,105,.12);color:#059669}
+.wzr-nom-t{font-size:12px;color:var(--ink);margin-top:6px;line-height:1.35;opacity:.85}
+.wzr-nom-m{font-size:10.5px;color:var(--muted);margin-top:6px;font-family:'Menlo','Consolas',monospace}
+.wzr-plan{display:grid;gap:8px}
+.wzr-step{display:flex;align-items:center;gap:14px;padding:12px 14px;background:#fafbfc;border:1px solid var(--line);border-radius:10px;font-size:13.5px;color:var(--ink)}
+.wzr-step span{width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex:0 0 auto}
+.wzr-cta{margin-top:28px;padding:24px;background:linear-gradient(135deg,#fafbfc,#fff);border:1px dashed var(--line);border-radius:14px;text-align:center}
+.wzr-cta p{font-size:13.5px;color:var(--muted);margin-bottom:14px}
+@media (max-width:780px){
+  .wzr-grid{grid-template-columns:repeat(2,1fr)}
+}
+.wz-input{width:100%;padding:15px 18px;border:1px solid var(--line);border-radius:12px;font-family:inherit;font-size:15px;outline:none;transition:.2s;background:#fff}
+.wz-input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,22,40,.08)}
+.wz-input.is-invalid{border-color:#dc2626;background:#fff5f5;box-shadow:0 0 0 3px rgba(220,38,38,.10)}
+.wz-input.is-invalid:focus{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.18)}
+
+/* Alerta de errores en el form */
+.wz-alert{display:flex;align-items:flex-start;gap:12px;background:#FEF2F2;border:1px solid rgba(220,38,38,.30);border-left:4px solid #dc2626;border-radius:10px;padding:14px 16px;margin-bottom:18px;max-width:460px;opacity:0;transform:translateY(-6px);max-height:0;overflow:hidden;transition:opacity .25s,transform .3s cubic-bezier(.16,1,.3,1),max-height .3s,margin-bottom .25s,padding .25s}
+.wz-alert.show{opacity:1;transform:translateY(0);max-height:240px;padding:14px 16px;margin-bottom:18px}
+.wz-alert-ico{font-size:20px;flex:0 0 auto;line-height:1}
+.wz-alert b{font-size:13.5px;color:#991b1b;display:block;margin-bottom:6px}
+.wz-alert ul{margin:0;padding-left:18px}
+.wz-alert li{font-size:12.5px;color:#7f1d1d;line-height:1.45;margin-bottom:2px}
+.wz-form{display:grid;gap:14px;max-width:460px}
+.wz-foot{padding:22px 36px;border-top:1px solid var(--line);background:#fff;display:flex;justify-content:space-between;align-items:center}
+.wz-back{background:transparent;border:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:6px;letter-spacing:.04em}
+.wz-back:disabled{opacity:.3;cursor:not-allowed}
+.wz-back:not(:disabled):hover{color:var(--ink)}
+.res-head{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.res-ico{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--cyan));color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+.res-h{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.res-card{background:var(--bg-soft);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:20px}
+.res-card .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--teal);margin-bottom:14px}
+.res-line{padding:11px 0;border-bottom:1px dashed var(--line);display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:500}
+.res-line:last-child{border-bottom:none}
+.res-line .tag{margin-left:auto;font-size:11px;padding:3px 10px;border-radius:999px;font-weight:700;background:#dcfce7;color:#166534}
+.metrics-wrap{padding:130px 0}
+.metrics-head{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:end;margin-bottom:80px}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.metric{padding:30px 26px;border-top:1px solid var(--ink)}
+.metric .num{font-size:clamp(54px,5vw,84px);font-weight:800;letter-spacing:-.045em;line-height:1;color:var(--ink)}
+.metric .num span{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.metric .lbl{font-size:14px;font-weight:700;margin-top:16px;letter-spacing:-.005em}
+.metric p{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+.cta-band{position:relative;padding:140px 0 160px;background:radial-gradient(70% 50% at 80% 10%,rgba(224,185,122,.22),transparent 60%),radial-gradient(60% 70% at 15% 90%,rgba(14,165,233,.30),transparent 60%),linear-gradient(135deg,#0a1628 0%,#11243f 50%,#0a1628 100%);color:#fff;text-align:center;overflow:hidden}
+
+/* ═══ NOTICIAS EN TIEMPO REAL ═══ */
+.news-band{position:relative;padding:110px 0 120px;background:linear-gradient(180deg,#fff 0%,#fafbfc 100%);overflow:hidden}
+.news-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:48px}
+.news-status{margin-top:22px;display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;color:var(--muted,#64748b);background:#fff;border:1px solid var(--line,#e5e7eb);padding:8px 14px;border-radius:999px}
+.ns-dot{width:8px;height:8px;border-radius:50%;background:#cbd5e1;box-shadow:0 0 0 0 rgba(13,148,136,.5)}
+.news-status.live .ns-dot{background:var(--teal,#0d9488);animation:pulse 2.2s infinite}
+.news-status.err .ns-dot{background:#dc2626}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.news-card{background:#fff;border:1px solid var(--line,#e5e7eb);border-radius:14px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s,border-color .3s;position:relative}
+.news-card:hover{transform:translateY(-3px);border-color:rgba(13,148,136,.45);box-shadow:0 18px 38px -16px rgba(15,23,42,.18)}
+.nc-meta{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;color:var(--muted,#64748b);letter-spacing:.02em}
+.nc-source{background:rgba(14,165,233,.10);color:#0369a1;border:1px solid rgba(14,165,233,.20);padding:3px 9px;border-radius:999px;text-transform:none;letter-spacing:0;font-weight:700;font-size:11px}
+.nc-date{margin-left:auto;font-weight:500;color:#94a3b8}
+.nc-title{font-size:15.5px;font-weight:700;color:var(--ink,#0a1628);line-height:1.4;letter-spacing:-.01em}
+.nc-desc{font-size:13px;color:var(--muted,#64748b);line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.nc-cta{margin-top:8px;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--teal,#0d9488);letter-spacing:.02em;transition:.2s}
+.news-card:hover .nc-cta{transform:translateX(3px)}
+/* skeleton mientras carga */
+.news-skel{pointer-events:none}
+.news-skel .ns-line{height:10px;background:linear-gradient(90deg,#eef0f3,#f7f8fa,#eef0f3);background-size:200% 100%;border-radius:6px;animation:skl 1.4s ease-in-out infinite}
+.news-skel .ns-line.short{width:65%;height:18px}
+.news-skel .ns-line.tiny{width:40%;height:8px;opacity:.7}
+@keyframes skl{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(13,148,136,.5)}50%{box-shadow:0 0 0 8px rgba(13,148,136,0)}}
+@media (max-width:1000px){
+  .news-grid{grid-template-columns:repeat(2,1fr)}
+  .news-head{grid-template-columns:1fr;gap:24px}
+}
+@media (max-width:640px){ .news-grid{grid-template-columns:1fr} }
+
+/* ═══ VIDEOS · CENTRO DE APRENDIZAJE ═══ */
+.videos-band{position:relative;padding:120px 0 130px;background:linear-gradient(180deg,#0a1628 0%,#11243f 50%,#0a1628 100%);color:#fff;overflow:hidden}
+.videos-band::before{content:"";position:absolute;top:-100px;left:-80px;width:380px;height:380px;background:radial-gradient(circle,rgba(13,148,136,.22),transparent 70%);border-radius:50%;pointer-events:none}
+.videos-band::after{content:"";position:absolute;bottom:-120px;right:-100px;width:420px;height:420px;background:radial-gradient(circle,rgba(224,185,122,.16),transparent 70%);border-radius:50%;pointer-events:none}
+.vid-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:60px;position:relative;z-index:1}
+.vid-head h2{color:#fff}
+.vid-head h2 em{color:var(--gold-warm,#e0b97a)}
+.vid-head .eyebrow-serif{color:var(--gold-warm,#e0b97a)}
+.vid-head .lede{color:rgba(255,255,255,.78)}
+.vid-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;position:relative;z-index:1}
+.vid-card{text-decoration:none;color:inherit}
+.vid-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s,border-color .35s;display:flex;flex-direction:column}
+.vid-card:hover{transform:translateY(-4px);border-color:rgba(224,185,122,.40);box-shadow:0 24px 48px -16px rgba(0,0,0,.55)}
+.vid-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:#000}
+.vid-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.16,1,.3,1);filter:saturate(1.05)}
+.vid-card:hover .vid-thumb img{transform:scale(1.06)}
+.vid-thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.45) 100%);pointer-events:none}
+.vid-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(224,185,122,.95);color:#0a1628;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 28px rgba(0,0,0,.45);transition:transform .25s,background .25s;z-index:2}
+.vid-play svg{width:30px;height:30px;margin-left:3px}
+.vid-card:hover .vid-play{transform:translate(-50%,-50%) scale(1.10);background:var(--gold-warm,#e0b97a)}
+.vid-dur{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.78);color:#fff;font-size:12px;font-weight:600;padding:4px 9px;border-radius:6px;letter-spacing:.02em;z-index:2}
+.vid-meta{padding:22px 24px 24px;flex:1;display:flex;flex-direction:column;gap:10px;min-height:170px}
+.vid-tag{display:inline-block;align-self:flex-start;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-warm,#e0b97a);background:rgba(224,185,122,.10);border:1px solid rgba(224,185,122,.28);padding:4px 10px;border-radius:999px}
+.vid-meta h4{font-size:16px;font-weight:700;color:#fff;line-height:1.32;letter-spacing:-.01em;margin-top:4px}
+.vid-meta p{font-size:13.5px;color:rgba(255,255,255,.65);line-height:1.55;margin-top:4px;flex:1}
+.vid-open{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12.5px;font-weight:700;color:var(--gold-warm,#e0b97a);letter-spacing:.03em;transition:.2s}
+.vid-card:hover .vid-open{color:#fff;transform:translateX(3px)}
+@media (max-width:900px){
+  .vid-grid{grid-template-columns:1fr;gap:22px;max-width:560px;margin:0 auto}
+  .vid-head{grid-template-columns:1fr;gap:24px}
+}
+
+/* ═══ FUNDADOR / DIRECTOR ═══ */
+.founder-band{position:relative;padding:120px 0;background:linear-gradient(180deg,#fafbfc 0%,#fff 60%,#f6f7f9 100%);overflow:hidden}
+.founder-band::before{content:"";position:absolute;top:-80px;right:-80px;width:340px;height:340px;background:radial-gradient(circle,rgba(224,185,122,.18),transparent 70%);border-radius:50%;pointer-events:none}
+.founder-band::after{content:"";position:absolute;bottom:-100px;left:-100px;width:380px;height:380px;background:radial-gradient(circle,rgba(13,148,136,.10),transparent 70%);border-radius:50%;pointer-events:none}
+.founder-grid{display:grid;grid-template-columns:420px 1fr;gap:80px;align-items:center;position:relative;z-index:1}
+.founder-photo{position:relative}
+.founder-photo-frame{position:relative;border-radius:24px;overflow:hidden;background:linear-gradient(135deg,#0a1628 0%,#11243f 60%,#0d9488 100%);box-shadow:0 30px 80px -20px rgba(10,22,40,.45),0 8px 24px -8px rgba(10,22,40,.20);aspect-ratio:4/5;max-width:420px}
+.founder-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:contrast(1.02)}
+.founder-photo-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(10,22,40,.18) 100%);pointer-events:none}
+.founder-badge{position:absolute;bottom:-22px;right:-22px;background:linear-gradient(135deg,var(--gold,#c8a96a),var(--gold-warm,#e0b97a));color:#0a1628;padding:18px 24px;border-radius:18px;box-shadow:0 16px 36px -10px rgba(200,169,106,.55);display:flex;align-items:center;gap:14px;border:3px solid #fff}
+.fb-num{font-size:46px;font-weight:900;letter-spacing:-.05em;line-height:1;font-family:'Inter',sans-serif}
+.fb-txt{font-size:11.5px;font-weight:600;letter-spacing:.04em;line-height:1.35;text-transform:uppercase}
+.founder-copy h2{margin-top:14px}
+.founder-sign{margin-top:34px;padding-top:24px;border-top:1px solid var(--line,#e5e7eb)}
+.founder-name{font-family:'Instrument Serif',serif;font-style:italic;font-size:34px;color:var(--ink,#0a1628);letter-spacing:-.02em;line-height:1}
+.founder-role{margin-top:6px;font-size:13px;color:var(--muted,#64748b);font-weight:500;letter-spacing:.02em}
+@media (max-width:900px){
+  .founder-grid{grid-template-columns:1fr;gap:60px}
+  .founder-photo-frame{max-width:340px;margin:0 auto}
+  .founder-badge{right:auto;left:50%;transform:translateX(40%);bottom:-18px}
+}
+.cta-band::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:26px 26px;-webkit-mask-image:radial-gradient(ellipse at center,black 20%,transparent 75%);mask-image:radial-gradient(ellipse at center,black 20%,transparent 75%);opacity:.45}
+.cta-band .h2 em{color:var(--gold-warm)}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:36px}
+footer{background:#fff;padding:60px 0 40px;border-top:1px solid var(--line)}
+.foot{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--line)}
+.foot-brand p{font-size:14px;color:var(--muted);margin-top:14px;max-width:320px;line-height:1.6}
+.foot h6{font-size:11px;text-transform:uppercase;letter-spacing:.15em;font-weight:700;color:var(--ink);margin-bottom:16px}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.foot ul a{font-size:14px;color:var(--muted);transition:.2s}
+.foot ul a:hover{color:var(--ink)}
+.foot-bottom{padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
+@media(max-width:980px){
+.nav-links{display:none}
+.nav-cta{display:none}
+.menu-panel{right:8px;width:calc(100vw - 16px);max-width:340px}
+.split,.srv-head,.portal-grid,.metrics-head{grid-template-columns:1fr;gap:32px}
+.feat-grid{grid-template-columns:1fr;gap:32px}
+.srv-grid{grid-template-columns:1fr 1fr}
+.srv.big{grid-column:span 2}
+.steps{grid-template-columns:1fr 1fr}
+.compare{grid-template-columns:1fr}
+.metrics-grid{grid-template-columns:1fr 1fr}
+.foot{grid-template-columns:1fr 1fr}
+.mock-body{grid-template-columns:1fr}
+.mock-side{display:none}
+.wz-body{padding:36px 24px 24px}
+.wz-top,.wz-foot{padding-left:24px;padding-right:24px}
+}
+@media(max-width:640px){
+.section,.gradient-band,.portal-band,.cta-band,.wizard-wrap,.steps-wrap,.metrics-wrap{padding-top:80px;padding-bottom:90px}
+#hero{padding-top:130px}
+.srv-grid,.steps,.metrics-grid,.foot{grid-template-columns:1fr}
+.srv.big{grid-column:span 1}
+.hero-stage{padding:40px 16px 0;border-radius:22px}
+.hero-visual{padding:0 4px}
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   ENTERPRISE V2 · Reposicionamiento premium · CAESI Platform
+   Estilo Stripe/Linear/Vercel · Branding institucional 2026
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* Tipografía refinada */
+body{
+  font-feature-settings:"ss01","ss02","cv11","cv05";
+  letter-spacing:-.011em;
+  -webkit-font-smoothing:antialiased
+}
+
+/* Background mesh sutil enterprise */
+body{
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(13,148,136,.04) 0%, transparent 35%),
+    radial-gradient(ellipse at 100% 100%, rgba(184,137,60,.04) 0%, transparent 35%) !important;
+  background-attachment:fixed !important
+}
+
+/* Hero badge con backdrop y borde elegante */
+.hero-badge{
+  background:rgba(255,255,255,.85) !important;
+  backdrop-filter:blur(14px) saturate(180%);
+  border:1px solid rgba(13,148,136,.22) !important;
+  box-shadow:0 4px 14px -4px rgba(13,148,136,.18);
+  font-weight:600 !important;
+  padding:9px 18px !important
+}
+
+/* Display con gradient sutil */
+.display{
+  background:linear-gradient(180deg,#0a1628 0%, #1e293b 70%, #0d9488 130%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+.display em{
+  background:linear-gradient(135deg,#c8a96a,#e0b97a);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+
+/* ──────────────────────────────────────────────────────────
+   TRUSTED BY · logos institucionales
+   ────────────────────────────────────────────────────────── */
+.trusted-band{
+  padding:50px 0 30px;
+  border-top:1px solid rgba(15,23,42,.05);
+  background:rgba(250,251,252,.6)
+}
+.trusted-head{
+  text-align:center;
+  font-size:12px;
+  font-weight:600;
+  color:rgba(15,23,42,.45);
+  letter-spacing:.20em;
+  text-transform:uppercase;
+  margin-bottom:32px
+}
+.trusted-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:48px;
+  align-items:center;
+  max-width:1080px;
+  margin:0 auto;
+  padding:0 32px
+}
+.trusted-logo{
+  font-family:'Inter',sans-serif;
+  font-weight:800;
+  font-size:18px;
+  letter-spacing:-.03em;
+  color:rgba(15,23,42,.35);
+  text-align:center;
+  filter:grayscale(1);
+  transition:.3s
+}
+.trusted-logo:hover{color:rgba(15,23,42,.7);filter:grayscale(0)}
+.trusted-logo small{
+  display:block;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.14em;
+  margin-top:2px;
+  opacity:.7;
+  text-transform:uppercase
+}
+@media (max-width:900px){
+  .trusted-grid{grid-template-columns:repeat(3,1fr);gap:28px}
+}
+
+/* ──────────────────────────────────────────────────────────
+   IA COPILOTO · sección enterprise
+   ────────────────────────────────────────────────────────── */
+.ai-band{
+  padding:130px 0;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(13,148,136,.10), transparent 50%),
+    radial-gradient(ellipse at 0% 100%, rgba(184,137,60,.08), transparent 50%),
+    linear-gradient(180deg,#fafbfc 0%, #fff 100%);
+  position:relative;overflow:hidden
+}
+.ai-band::before{
+  content:"";
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(13,148,136,.4),rgba(184,137,60,.3),transparent)
+}
+.ai-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+  margin-top:64px
+}
+.ai-mockup{
+  background:linear-gradient(135deg,#0a1628 0%,#11243f 60%,#0a1628 100%);
+  border-radius:24px;
+  padding:32px 28px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 40px 80px -30px rgba(10,22,40,.45),
+             0 0 0 1px rgba(255,255,255,.06);
+  color:#fff
+}
+.ai-mockup::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#14b8a6,#e0b97a,#14b8a6,transparent);
+  background-size:200% 100%;
+  animation:tech-shimmer 4s linear infinite
+}
+@keyframes tech-shimmer{0%{background-position:0% 0}100%{background-position:200% 0}}
+
+.ai-mock-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:18px;
+  padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.08)
+}
+.ai-mock-orb{
+  width:38px;height:38px;border-radius:12px;
+  background:linear-gradient(135deg,#14b8a6,#0d9488);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 20px -6px rgba(20,184,184,.55);
+  position:relative
+}
+.ai-mock-orb::after{
+  content:"";position:absolute;inset:-3px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#14b8a6,#0d9488,#14b8a6);
+  background-size:200% 100%;
+  animation:tech-shimmer 3s linear infinite;
+  opacity:.35;
+  z-index:-1
+}
+.ai-mock-orb svg{width:20px;height:20px;color:#fff}
+.ai-mock-title{
+  font-size:14px;font-weight:700;color:#fff;letter-spacing:-.01em
+}
+.ai-mock-tag{
+  margin-left:auto;
+  font-size:10px;font-weight:700;letter-spacing:.12em;
+  color:#14b8a6;text-transform:uppercase;
+  padding:4px 8px;border-radius:6px;
+  background:rgba(20,184,184,.12);
+  border:1px solid rgba(20,184,184,.30)
+}
+
+.ai-message{
+  background:rgba(255,255,255,.04);
+  border-left:2px solid #14b8a6;
+  border-radius:12px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  font-size:13.5px;
+  line-height:1.55;
+  color:rgba(255,255,255,.85)
+}
+.ai-message:nth-child(odd){
+  border-left-color:#e0b97a
+}
+.ai-message b{color:#fff;font-weight:700}
+.ai-message .ai-tag{
+  display:inline-block;
+  font-size:9.5px;font-weight:700;letter-spacing:.10em;
+  color:#0a1628;background:#e0b97a;
+  padding:2px 7px;border-radius:4px;
+  margin-right:6px;text-transform:uppercase
+}
+.ai-message .ai-tag.ok{background:#14b8a6;color:#fff}
+.ai-message .ai-tag.warn{background:#f59e0b;color:#fff}
+.ai-message .ai-tag.crit{background:#ef4444;color:#fff}
+
+.ai-input{
+  margin-top:18px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  padding:12px 16px;
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;
+  color:rgba(255,255,255,.55)
+}
+.ai-input::before{
+  content:"";display:inline-block;
+  width:6px;height:14px;background:#14b8a6;
+  animation:ai-blink 1s steps(2) infinite
+}
+@keyframes ai-blink{0%,50%{opacity:1}50.1%,100%{opacity:0}}
+
+.ai-copy h2{margin-top:18px}
+.ai-features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:32px
+}
+.ai-feature{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:14px;border-radius:12px;
+  background:#fff;
+  border:1px solid rgba(15,23,42,.06);
+  transition:.25s
+}
+.ai-feature:hover{border-color:rgba(13,148,136,.30);transform:translateY(-2px);box-shadow:0 12px 24px -10px rgba(13,148,136,.16)}
+.ai-feature-ico{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(13,148,136,.12),rgba(184,137,60,.10));
+  display:flex;align-items:center;justify-content:center;
+  flex:0 0 auto;
+  border:1px solid rgba(13,148,136,.20)
+}
+.ai-feature-ico svg{width:18px;height:18px;color:#0d9488}
+.ai-feature-text{font-size:13px;color:#0a1628;font-weight:600;line-height:1.4}
+.ai-feature-text small{display:block;font-weight:500;color:#64748b;font-size:11.5px;margin-top:2px;letter-spacing:.01em}
+
+@media (max-width:900px){
+  .ai-grid{grid-template-columns:1fr;gap:48px}
+  .ai-features{grid-template-columns:1fr}
+}
+
+/* ──────────────────────────────────────────────────────────
+   SECURITY & COMPLIANCE band
+   ────────────────────────────────────────────────────────── */
+.sec-compliance{
+  padding:80px 0;
+  background:#0a1628;
+  color:#fff;
+  position:relative;overflow:hidden
+}
+.sec-compliance::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(13,148,136,.15), transparent 40%),
+    radial-gradient(circle at 80% 100%, rgba(184,137,60,.10), transparent 40%)
+}
+.sec-compliance > *{position:relative;z-index:1}
+.sec-compliance .h2{color:#fff;font-size:clamp(28px,3.4vw,42px)}
+.sec-compliance .h2 em{color:#e0b97a;-webkit-text-fill-color:#e0b97a;background:none}
+.sec-compliance .lede{color:rgba(255,255,255,.7)}
+
+.cert-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-top:48px
+}
+.cert-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:22px 20px;
+  backdrop-filter:blur(10px);
+  transition:.25s
+}
+.cert-card:hover{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(224,185,122,.3);
+  transform:translateY(-3px)
+}
+.cert-card svg{width:32px;height:32px;color:#e0b97a;margin-bottom:14px}
+.cert-card h5{
+  font-size:14px;font-weight:700;color:#fff;letter-spacing:-.01em;margin-bottom:6px
+}
+.cert-card p{font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.5}
+@media (max-width:900px){.cert-grid{grid-template-columns:1fr 1fr}}
+
+/* CTA hero (botón diagnóstico) más enterprise */
+.btn-solid{
+  background:linear-gradient(135deg,#0a1628,#1e293b) !important;
+  color:#fff !important;
+  box-shadow:0 12px 30px -10px rgba(10,22,40,.40),0 0 0 1px rgba(255,255,255,.06) inset;
+  position:relative;overflow:hidden
+}
+.btn-solid::before{
+  content:"";position:absolute;top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+  transition:left .8s ease
+}
+.btn-solid:hover::before{left:100%}
+
+/* Section headers refinados */
+.eyebrow-serif{font-size:24px}
+
+/* Scrollbar enterprise */
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(15,23,42,.14);border-radius:999px;border:3px solid #fff}
+::-webkit-scrollbar-thumb:hover{background:#0d9488}
+
+/* ══════════════════════════════════════════════════════════
+   NAVEGACIÓN POR PESTAÑAS · La página ya no es un scroll infinito:
+   cada sección vive en su propia vista.
+   ══════════════════════════════════════════════════════════ */
+.tabbar{border-top:1px solid var(--line);background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px)}
+.tabbar-inner{max-width:1240px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabbar-inner::-webkit-scrollbar{display:none}
+.tab-link{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:13px 18px;font-size:13.5px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;transition:.2s;white-space:nowrap;letter-spacing:.01em}
+.tab-link:hover{color:var(--ink)}
+.tab-link.act{color:var(--ink);border-bottom-color:var(--teal)}
+.tab-link .tl-dot{width:6px;height:6px;border-radius:50%;background:var(--line);transition:.2s}
+.tab-link.act .tl-dot{background:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.15)}
+
+[data-view]{display:none}
+[data-view].act{display:block;animation:viewin .55s cubic-bezier(.16,1,.3,1)}
+@keyframes viewin{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+body{padding-top:126px}
+#hero{padding:56px 0 40px}
+section{scroll-margin-top:150px}
+@media(max-width:640px){body{padding-top:116px}#hero{padding-top:34px}}
+
+/* ══════════ DIAGNÓSTICO 2.0 ══════════ */
+.wz-multi{display:flex;flex-wrap:wrap;gap:10px}
+.wz-chip{padding:11px 18px;border:1px solid var(--line);border-radius:999px;cursor:pointer;font-size:13.5px;font-weight:600;display:inline-flex;gap:8px;align-items:center;transition:.2s;background:#fff;color:var(--ink)}
+.wz-chip:hover{border-color:var(--ink);transform:translateY(-1px)}
+.wz-chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.wz-chip.on::after{content:"✓";color:var(--gold-warm);font-weight:800}
+.wzr-head2{display:flex;gap:26px;align-items:center;flex-wrap:wrap;margin-bottom:24px}
+.wzr-gauge{position:relative;width:132px;height:132px;flex:0 0 auto}
+.wzr-gauge svg{transform:rotate(-90deg);display:block}
+.wzr-gauge circle{fill:none;stroke-width:11;stroke-linecap:round}
+.wzr-gauge .bgc{stroke:#eef0f3}
+.wzr-gauge .fgc{transition:stroke-dashoffset 1.2s cubic-bezier(.16,1,.3,1)}
+.wzr-gauge .gv{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.wzr-gauge .gv b{font-size:30px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.wzr-gauge .gv span{font-size:9.5px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.wzr-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.wzr-act2{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border:1px solid var(--line);border-radius:999px;font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;background:#fff;transition:.2s}
+.wzr-act2:hover{border-color:var(--ink);transform:translateY(-1px)}
+.wzr-act2.wa{border-color:#25D366;color:#128C7E}
+.wzr-act2.wa:hover{background:#25D366;color:#fff}
+.wzr-fase{border:1px solid var(--line);border-radius:12px;padding:14px 18px;background:#fafbfc;margin-top:10px}
+.wzr-fase b.f-t{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--teal)}
+.wzr-fase ul{margin:8px 0 0;padding-left:18px}
+.wzr-fase li{font-size:13.5px;color:var(--ink);margin:5px 0;line-height:1.5}
+.wzr-nota35{margin-top:14px;padding:13px 16px;border-left:3px solid var(--gold);background:linear-gradient(135deg,#fdf6e3,#fff);border-radius:0 10px 10px 0;font-size:13px;color:var(--ink);line-height:1.5}
+
+/* ═══════════════════════════════════════════════════════════════
+   EFECTOS ESTILO CANTOR8 · identidad CAESI (fondo claro)
+   Acento azul institucional + movimiento, marquee, cards modulares
+   ═══════════════════════════════════════════════════════════════ */
+:root{--blue:#044AB3;--blue-2:#0a5fd6;--blue-soft:#eaf1fb}
+
+/* — Etiqueta técnica tipo "FOUNDATION / 01" — */
+.sec-index{display:inline-flex;align-items:center;gap:12px;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--blue);margin-bottom:18px}
+.sec-index::before{content:"";width:34px;height:1px;background:var(--blue);opacity:.5}
+.sec-index .si-n{font-variant-numeric:tabular-nums;opacity:.55}
+
+/* — Reveal escalonado / clip (más “cinemático”) — */
+.reveal-clip{clip-path:inset(0 0 100% 0);opacity:0;transition:clip-path 1.1s cubic-bezier(.16,1,.3,1),opacity 1.1s cubic-bezier(.16,1,.3,1)}
+.reveal-clip.in{clip-path:inset(0 0 0 0);opacity:1}
+.d5{transition-delay:.40s}.d6{transition-delay:.48s}
+
+/* — Indicador scroll-down del hero — */
+.scroll-down{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:9px;font-size:10.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);opacity:.9}
+.scroll-down .sd-line{width:1px;height:44px;background:linear-gradient(180deg,var(--blue),transparent);position:relative;overflow:hidden}
+.scroll-down .sd-line::after{content:"";position:absolute;top:-40%;left:0;width:1px;height:40%;background:var(--blue);animation:sdrun 1.8s cubic-bezier(.7,0,.3,1) infinite}
+@keyframes sdrun{0%{top:-40%}60%,100%{top:100%}}
+
+/* — Marquee infinito (logos / autoridades) — */
+.marquee{position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;width:max-content;gap:56px;align-items:center;animation:mq 34s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+.mq-logo{font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--ink-2);opacity:.55;white-space:nowrap;display:inline-flex;align-items:baseline;gap:7px;transition:.25s}
+.mq-logo:hover{opacity:1;color:var(--blue)}
+.mq-logo small{font-size:10px;font-weight:600;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+
+/* — Card modular con flecha animada (product-suite Cantor8) — */
+.mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-top:44px;background:var(--line)}
+.mod-card{position:relative;background:var(--bg);padding:34px 30px 30px;display:flex;flex-direction:column;min-height:230px;transition:background .4s cubic-bezier(.16,1,.3,1)}
+.mod-card::after{content:"";position:absolute;left:0;top:0;height:2px;width:0;background:var(--blue);transition:width .5s cubic-bezier(.16,1,.3,1)}
+.mod-card:hover{background:var(--blue-soft)}
+.mod-card:hover::after{width:100%}
+.mod-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:auto}
+.mod-tag{font-size:10.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--blue)}
+.mod-arrow{width:30px;height:30px;color:var(--muted-2);transition:transform .4s cubic-bezier(.16,1,.3,1),color .3s}
+.mod-card:hover .mod-arrow{transform:translate(4px,-4px);color:var(--blue)}
+.mod-card h4{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-top:26px;color:var(--ink)}
+.mod-card p{font-size:13.5px;color:var(--muted);line-height:1.55;margin-top:9px}
+@media(max-width:900px){.mod-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.mod-grid{grid-template-columns:1fr}}
+
+/* — Video destacado (embed) + grid de aprendizaje — */
+.vfeat{display:grid;grid-template-columns:1.35fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-top:8px;background:var(--ink-2)}
+.vembed{position:relative;aspect-ratio:16/9;background:#000}
+.vembed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vfeat-copy{padding:38px 34px;color:#fff;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(120% 120% at 100% 0,rgba(4,74,179,.35),transparent 60%),var(--ink-2)}
+.vfeat-copy .vf-eyebrow{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-warm);margin-bottom:14px}
+.vfeat-copy h3{font-size:clamp(22px,2.4vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.12}
+.vfeat-copy p{color:rgba(255,255,255,.72);font-size:14.5px;line-height:1.6;margin-top:14px;max-width:420px}
+.vfeat-chan{margin-top:20px;display:inline-flex;align-items:center;gap:9px;font-size:12.5px;color:rgba(255,255,255,.6)}
+.vfeat-chan b{color:#fff}
+@media(max-width:820px){.vfeat{grid-template-columns:1fr}}
+
+/* — Sección intro-video (poster con play) — */
+.introvid{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/9;background:#0a1628;cursor:pointer;border:1px solid var(--line)}
+.introvid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.introvid-poster{position:absolute;inset:0;background-size:cover;background-position:center}
+.introvid-poster::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,22,40,.25),rgba(10,22,40,.72))}
+.introvid-play{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:2}
+.iv-btn{width:78px;height:78px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);border:1.5px solid rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;color:#fff;transition:.3s}
+.introvid:hover .iv-btn{background:var(--blue);border-color:var(--blue);transform:scale(1.06)}
+.iv-btn svg{width:26px;height:26px;margin-left:3px}
+.iv-cap{color:#fff;font-size:13.5px;font-weight:600;letter-spacing:.02em;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+
+/* — Galería de autoridad (prueba social institucional) — */
+.auth-band{background:var(--ink-2);color:#fff;padding:96px 0}
+.auth-band .h2{color:#fff}
+.auth-band .lede{color:rgba(255,255,255,.72)}
+.auth-band .sec-index{color:var(--gold-warm)}
+.auth-band .sec-index::before{background:var(--gold-warm)}
+.auth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.auth-item{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#12203a,#0a1628);border:1px solid rgba(255,255,255,.09)}
+.auth-item img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.auth-item:hover img{transform:scale(1.05)}
+.auth-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 18px;background:linear-gradient(180deg,transparent,rgba(5,9,18,.9));font-size:13px;font-weight:600;color:#fff;z-index:2}
+.auth-cap small{display:block;font-weight:500;color:rgba(255,255,255,.6);font-size:11.5px;margin-top:2px}
+.auth-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,.42);text-align:center;padding:20px}
+.auth-ph svg{width:34px;height:34px;opacity:.5}
+.auth-ph b{font-size:12.5px;font-weight:700;letter-spacing:.02em;color:rgba(255,255,255,.7)}
+.auth-ph span{font-size:11px;line-height:1.5;max-width:200px}
+@media(max-width:820px){.auth-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.auth-grid{grid-template-columns:1fr}}
+
+/* — Sección contacto directo (reemplaza cotizador) — */
+.contact-band{padding:110px 0;background:radial-gradient(120% 90% at 50% 0,var(--blue-soft),var(--bg) 55%)}
+.contact-card{max-width:960px;margin:44px auto 0;border:1px solid var(--line);border-radius:var(--r-lg);background:#fff;box-shadow:var(--shadow-card);display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden}
+.contact-left{padding:44px 40px}
+.contact-left h3{font-size:26px;font-weight:800;letter-spacing:-.025em;line-height:1.1}
+.contact-left p{color:var(--muted);font-size:14.5px;line-height:1.6;margin-top:14px;max-width:380px}
+.contact-methods{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+.cm-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;transition:.25s;color:var(--ink)}
+.cm-row:hover{border-color:var(--blue);background:var(--blue-soft);transform:translateX(3px)}
+.cm-ico{width:40px;height:40px;border-radius:10px;background:var(--blue-soft);color:var(--blue);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.cm-ico svg{width:20px;height:20px}
+.cm-row b{font-size:14.5px;display:block}
+.cm-row small{font-size:12.5px;color:var(--muted)}
+.contact-right{background:linear-gradient(160deg,var(--ink-2),#0a1628);color:#fff;padding:44px 38px;display:flex;flex-direction:column;justify-content:center}
+.contact-right .cr-eyebrow{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-warm);margin-bottom:16px}
+.contact-right ul{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:13px}
+.contact-right li{display:flex;gap:11px;font-size:14px;color:rgba(255,255,255,.85);line-height:1.5}
+.contact-right li svg{width:19px;height:19px;color:var(--gold-warm);flex:0 0 auto;margin-top:1px}
+@media(max-width:760px){.contact-card{grid-template-columns:1fr}}
+
+/* — Botón variante azul institucional — */
+.btn-blue{border-color:var(--blue);color:#fff;background:var(--blue)}
+.btn-blue .arrow{background:#fff;color:var(--blue)}
+.btn-blue:hover{background:var(--blue-2);border-color:var(--blue-2)}
+
+/* ═══════════════════════════════════════════════════════════════
+   TEMA OSCURO ESTILO CANTOR8  ·  negro azulado + azul eléctrico
+   (bloque final: gana la cascada y reskin­ea todo el sitio)
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#070b16;--bg-soft:#0e1526;--ink:#eef2f9;--ink-2:#ffffff;
+  --muted:#95a1ba;--muted-2:#6b7690;--line:rgba(255,255,255,.10);
+  --cyan:#4d86ff;--teal:#4d86ff;--gold:#5b8dff;--gold-warm:#7aa5ff;
+  --success:#34d399;--warn:#fbbf24;
+  --blue:#1e5bd6;--blue-2:#3b78ff;--blue-soft:rgba(47,107,255,.14);
+  --shadow-card:0 1px 2px rgba(0,0,0,.4),0 18px 40px -18px rgba(0,0,0,.7);
+  --shadow-deep:0 40px 90px -24px rgba(0,0,0,.8),0 8px 24px -8px rgba(0,0,0,.6);
+}
+html{background:#070b16}
+body{
+  color:var(--ink);
+  background:
+    radial-gradient(120% 80% at 50% -12%, rgba(4,74,179,.28), transparent 55%),
+    radial-gradient(90% 60% at 100% 0%, rgba(30,91,214,.10), transparent 60%),
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px) 0 0/62px 62px,
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px) 0 0/62px 62px,
+    #070b16;
+  background-attachment:fixed,fixed,fixed,fixed,fixed;
+}
+::selection{background:rgba(47,107,255,.35);color:#fff}
+
+/* Nav / menú / tabs oscuros */
+#nav{background:rgba(7,11,22,.55);backdrop-filter:saturate(160%) blur(16px);-webkit-backdrop-filter:saturate(160%) blur(16px)}
+#nav.scrolled{background:rgba(7,11,22,.86);border-bottom-color:var(--line)}
+#nav .logo-img{filter:brightness(1.12) contrast(1.02) drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+.nav-links a{color:var(--ink)}
+.menu-toggle{background:rgba(255,255,255,.06);border-color:var(--line)}
+.menu-toggle:hover{background:rgba(255,255,255,.12);border-color:var(--blue-2)}
+.menu-toggle span{background:var(--ink)}
+.menu-panel{background:#0c1324;border-color:var(--line);box-shadow:0 30px 70px -20px rgba(0,0,0,.85)}
+.menu-inner a{color:var(--ink)}
+.menu-inner a:hover{background:rgba(255,255,255,.04);border-left-color:var(--blue-2)}
+.menu-sep{background:var(--line)}
+.menu-cta{background:linear-gradient(135deg,rgba(47,107,255,.16),rgba(47,107,255,.06));border-left-color:var(--blue-2) !important}
+.menu-cta:hover{background:linear-gradient(135deg,rgba(47,107,255,.26),rgba(47,107,255,.12)) !important}
+.menu-cta b{color:var(--ink)}
+.tabbar{background:rgba(7,11,22,.5);border-color:var(--line)}
+.tab-link{color:var(--muted)}
+.tab-link.act{color:var(--ink);border-bottom-color:var(--blue-2)}
+.act .tl-dot{background:var(--blue-2);box-shadow:0 0 0 3px rgba(47,107,255,.20)}
+
+/* Botones */
+.btn{border-color:rgba(255,255,255,.24);color:var(--ink)}
+.btn .arrow{background:#fff;color:#070b16}
+.btn:hover{background:#fff;color:#070b16;box-shadow:0 14px 30px -12px rgba(47,107,255,.5)}
+.btn:hover .arrow{background:var(--blue);color:#fff}
+.btn-solid{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn-solid .arrow{background:#fff;color:var(--blue)}
+.btn-solid:hover{background:var(--blue-2);border-color:var(--blue-2);color:#fff}
+.btn-gold{border-color:var(--blue);color:#fff;background:var(--blue-soft)}
+.btn-gold .arrow{background:var(--blue);color:#fff}
+.btn-gold:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-ghost{border-color:rgba(255,255,255,.30);color:#fff}
+.btn-sm.nav-cta{border-color:var(--blue);background:var(--blue-soft);color:#fff}
+
+/* Bandas que eran claras → ahora transparentes (se ve el grid/glow) */
+.trusted-band{background:transparent;border-top-color:var(--line)}
+.news-band{background:transparent;border-top:1px solid var(--line)}
+.founder-band{background:transparent}
+.gradient-band{background:
+  radial-gradient(80% 60% at 82% 8%, rgba(47,107,255,.20), transparent 60%),
+  radial-gradient(70% 60% at 8% 92%, rgba(30,91,214,.22), transparent 62%)}
+
+/* Tarjetas / superficies oscuras */
+.srv.big{background:linear-gradient(135deg,#0d1c3f 0%,#123072 100%);border-color:rgba(47,107,255,.4);color:#fff}
+.news-card{background:var(--bg-soft);border-color:var(--line);color:var(--ink)}
+.news-card:hover{border-color:var(--blue-2);box-shadow:0 20px 44px -22px rgba(47,107,255,.5)}
+.pm-card{background:#0f1930;color:var(--ink);border:1px solid var(--line)}
+.chip{background:rgba(255,255,255,.08);color:var(--ink)}
+.chip.brand{background:var(--blue-soft);color:var(--blue-2)}
+.hero-badge{background:var(--blue-soft);color:var(--blue-2);border-color:rgba(47,107,255,.3)}
+.hb-dot{background:var(--blue-2);box-shadow:0 0 0 0 rgba(47,107,255,.5)}
+.founder-photo-frame{background:linear-gradient(135deg,#0a1628 0%,#123072 60%,#1e5bd6 100%)}
+.founder-badge{background:var(--blue);color:#fff}
+
+/* Contacto oscuro */
+.contact-band{background:radial-gradient(120% 90% at 50% 0,rgba(47,107,255,.12),transparent 55%)}
+.contact-card{background:#0d1526;border-color:var(--line);box-shadow:var(--shadow-deep)}
+.cm-row{color:var(--ink);border-color:var(--line)}
+.cm-row:hover{border-color:var(--blue-2);background:var(--blue-soft)}
+.cm-ico{background:var(--blue-soft);color:var(--blue-2)}
+
+/* Cards modulares hover azul */
+.mod-card:hover{background:rgba(47,107,255,.10)}
+.mod-card:hover::after{background:var(--blue-2)}
+
+/* Detalles de texto/acento a azul */
+.srv-tag,.feat-num{color:var(--blue-2)}
+.eyebrow-serif{color:var(--ink)}
+.ci-icon.ok{background:var(--blue-soft);color:var(--blue-2)}
+.step-mark{background:var(--blue-2);box-shadow:0 0 0 6px rgba(47,107,255,.14)}
+.metric{border-top-color:var(--blue-2)}
+.pm-bar span{background:var(--blue-2)}
+.dot.ok{background:var(--blue-2)}
+.ns-dot{background:var(--blue-2)}
+.news-status.live .ns-dot{background:var(--success)}
+
+/* ═══ TIPOGRAFÍA ESTILO CANTOR8 (grotesk + mono técnico) ═══ */
+.display,.h2,.logo,.founder-name,.pm-title,.vfeat-copy h3,.contact-left h3,.mod-card h4,.vid-meta h4,.wzr-title{
+  font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.03em}
+.display{font-weight:600;letter-spacing:-.045em}
+.h2{font-weight:600}
+/* Los acentos que antes eran serif itálica → grotesk azul (soporta ñ/tildes) */
+.serif,.h2 em,.display em,.vfeat-copy h3 em{font-family:'Space Grotesk','Inter',sans-serif;font-style:normal;font-weight:400;color:var(--blue-2);letter-spacing:-.03em}
+/* Eyebrow serif → etiqueta técnica mono en mayúsculas (como "FOUNDATION" de Cantor8) */
+.eyebrow-serif{font-family:'Space Mono','Inter',monospace !important;font-style:normal;font-size:12px;text-transform:uppercase;letter-spacing:.22em;color:var(--blue-2);opacity:1;font-weight:400}
+.eyebrow{font-family:'Space Mono','Inter',monospace;color:var(--blue-2)}
+.sec-index{font-family:'Space Mono','Inter',monospace}
+.btn,.vid-tag,.mod-tag,.mc-tag,.cr-eyebrow,.vf-eyebrow,.srv-tag,.feat-num,.ht-lbl,.lbl{font-family:'Space Mono','Inter',monospace}
+.hero-badge{font-family:'Space Mono','Inter',monospace;letter-spacing:.04em}
+
+/* ═══ VIDEOS QUE SE REPRODUCEN SOLOS ═══ */
+.vembed{position:relative}
+.vembed .vembed-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vid-card{cursor:pointer}
+.vid-thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1}
+.vid-thumb .vid-play,.vid-thumb .vid-dur{z-index:2}
+.yt-live{position:absolute;top:12px;left:12px;z-index:3;display:inline-flex;align-items:center;gap:6px;background:rgba(7,11,22,.7);backdrop-filter:blur(4px);color:#fff;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
+.yt-live::before{content:"";width:6px;height:6px;border-radius:50%;background:#ff4747;box-shadow:0 0 0 0 rgba(255,71,71,.6);animation:pulse 1.8s infinite}
+
+/* ═══ Últimos ajustes de superficies al tema oscuro ═══ */
+.ai-band{background:
+  radial-gradient(ellipse at 100% 0%, rgba(47,107,255,.14), transparent 50%),
+  radial-gradient(ellipse at 0% 100%, rgba(30,91,214,.12), transparent 50%)}
+.portal-band{background:
+  radial-gradient(60% 50% at 90% 0%, rgba(47,107,255,.18), transparent 60%),
+  radial-gradient(70% 70% at 10% 100%, rgba(30,91,214,.16), transparent 62%)}
+.cta-band{background:
+  radial-gradient(70% 50% at 80% 10%, rgba(47,107,255,.20), transparent 60%),
+  radial-gradient(60% 70% at 15% 90%, rgba(30,91,214,.16), transparent 62%)}
+.portal-mock{background:rgba(255,255,255,.04);border-color:var(--line)}
+.pm-mini{background:linear-gradient(150deg,#0f1930,#0c1426);border-color:var(--line)}
+.pm-bar{background:rgba(255,255,255,.09)}
+.mockup{background:#0e1526}
+.srv-vis{background:radial-gradient(circle at 30% 30%,rgba(47,107,255,.5),transparent 60%),radial-gradient(circle at 70% 70%,rgba(30,91,214,.4),transparent 55%)}
+.metric .num,.ht-num,.num{color:var(--ink)}
+.metric .num span,.num span{color:var(--blue-2)}
+
+/* ════════════════════════════════════════════════════════════════════
+   CANTOR8 REAL  ·  azul eléctrico #044AB3 + bloques negros + blanco
+   Tipografía: Onest (grotesk ligero) + Fragment Mono · pesos 400
+   ════════════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#044AB3;--bg-soft:#0a53c4;--ink:#ffffff;--ink-2:#ffffff;
+  --muted:rgba(255,255,255,.74);--muted-2:rgba(255,255,255,.55);--line:rgba(255,255,255,.20);
+  --blue:#044AB3;--blue-2:#9dc0ff;--blue-soft:rgba(255,255,255,.12);
+  --cyan:#c9dbff;--teal:#c9dbff;--gold:#c9dbff;--gold-warm:#e4eeff;
+  --black:#121212;
+}
+html{background:#044AB3}
+body{background:#044AB3 !important;color:#fff;font-family:'Onest','Inter',sans-serif;font-size:15px}
+
+/* — Tipografía tipo PP Neue Montreal: peso ligero, enorme, interlínea 1 — */
+.display,.h2,.serif,.h2 em,.display em,.logo,.founder-name,.pm-title,.vfeat-copy h3,.contact-left h3,.mod-card h4,.vid-meta h4,.wzr-title,.founder-copy h2{
+  font-family:'Onest','Inter',sans-serif !important;font-style:normal !important}
+.display{font-weight:400 !important;font-size:clamp(44px,8vw,94px) !important;line-height:.98 !important;letter-spacing:-.03em !important;color:#fff}
+.h2{font-weight:400 !important;font-size:clamp(38px,6.4vw,78px) !important;line-height:1.0 !important;letter-spacing:-.03em !important;color:#fff}
+.h2 em,.display em{font-weight:400 !important;color:var(--blue-2) !important;letter-spacing:-.03em}
+h4,h5,h6,.srv h4,.feat h4,.step h4{font-family:'Onest','Inter',sans-serif;font-weight:500}
+.lede,.hero-sub,p{font-family:'Onest','Inter',sans-serif}
+/* — Etiquetas técnicas: Fragment Mono en mayúsculas — */
+.eyebrow-serif,.eyebrow,.sec-index,.srv-tag,.mod-tag,.mc-tag,.cr-eyebrow,.vf-eyebrow,.feat-num,.hero-badge,.vid-tag,.scroll-down,.ht-lbl,.trusted-head,.mq-logo small,.foot h6,.nc-source,.nc-date{
+  font-family:'Fragment Mono','Space Mono',monospace !important;text-transform:uppercase;letter-spacing:.02em}
+.eyebrow-serif{font-size:12px;color:var(--blue-2);opacity:1;font-style:normal}
+.sec-index{color:var(--blue-2)}
+.sec-index::before{background:var(--blue-2)}
+
+/* — Fondo limpio (sin retícula), azul sólido — */
+::selection{background:#fff;color:#044AB3}
+
+/* — Bloques negros que alternan con el azul — */
+.multas-band,.sec-compliance,.founder-band,.auth-band,.videos-band,footer{background:var(--black) !important}
+.multas-band{background:radial-gradient(70% 60% at 90% 15%,rgba(255,71,71,.16),transparent 60%),var(--black) !important}
+.auth-band .sec-index,.auth-band .sec-index::before{background:transparent}
+.auth-band .sec-index{color:var(--blue-2)}
+/* — El resto de bandas: transparentes (se ve el azul) — */
+.section,.gradient-band,.steps-wrap,.metrics-wrap,.news-band,.portal-band,.cta-band,.ai-band,.contact-band,.trusted-band{background:transparent !important;border-color:var(--line)}
+
+/* — Nav / tabs sobre azul — */
+#nav{background:rgba(4,74,179,.55);backdrop-filter:saturate(140%) blur(14px);-webkit-backdrop-filter:saturate(140%) blur(14px)}
+#nav.scrolled{background:rgba(4,50,130,.86)}
+#nav .logo-img{filter:brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+footer .logo-img{filter:brightness(0) invert(1)}
+.nav-links a,.tab-link{color:rgba(255,255,255,.8)}
+.tab-link.act{color:#fff;border-bottom-color:#fff}
+.act .tl-dot{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.2)}
+.tabbar{background:rgba(4,50,130,.45);border-color:var(--line)}
+.menu-panel{background:#053a92;border-color:var(--line)}
+.menu-inner a{color:#fff}.menu-inner a:hover{background:rgba(255,255,255,.08);border-left-color:#fff}
+.menu-toggle{background:rgba(255,255,255,.10);border-color:var(--line)}
+.menu-toggle span{background:#fff}
+
+/* — Botones Cantor8: blanco sólido + texto azul, esquinas casi rectas, flecha “pixel” — */
+.btn{border-radius:3px;border-color:rgba(255,255,255,.45);color:#fff;background:transparent;font-family:'Onest',sans-serif;font-weight:500;text-transform:none;letter-spacing:-.01em;padding:12px 14px 12px 18px}
+.btn .arrow{border-radius:2px;width:26px;height:26px;background:#fff;color:#044AB3}
+.btn:hover{background:#fff;color:#044AB3;box-shadow:none}
+.btn:hover .arrow{background:#044AB3;color:#fff;transform:translate(2px,-2px)}
+.btn-solid,.btn-blue,.btn-gold{background:#fff;color:#044AB3;border-color:#fff}
+.btn-solid .arrow,.btn-blue .arrow,.btn-gold .arrow{background:#044AB3;color:#fff}
+.btn-solid:hover,.btn-blue:hover,.btn-gold:hover{background:#eaf1ff;color:#044AB3;border-color:#eaf1ff}
+.btn-ghost{border-color:rgba(255,255,255,.5);color:#fff;background:transparent}
+.btn-sm.nav-cta{background:#fff;color:#044AB3;border-color:#fff}
+.arrow{font-size:13px}
+
+/* — Superficies/tarjetas: vidrio blanco tenue sobre azul o negro — */
+.srv,.feat,.compare-card,.cert-card,.mod-card,.news-card,.pm-card,.portal-mock,.pm-mini,.contact-card,.step,.metric,.wz,.founder-photo-frame{
+  background:rgba(255,255,255,.06) !important;border:1px solid var(--line) !important;color:#fff}
+.srv.big{background:#fff !important;color:#044AB3 !important;border-color:#fff !important}
+.srv.big h4,.srv.big p{color:#044AB3 !important}
+.srv.big .btn-ghost{border-color:#044AB3;color:#044AB3}
+.srv.big .btn-ghost .arrow{background:#044AB3;color:#fff}
+.srv.big .srv-tag{color:#044AB3}
+.mod-card:hover{background:rgba(255,255,255,.12) !important}
+.mod-card:hover::after{background:#fff}
+.news-card:hover{border-color:#fff !important}
+.chip{background:rgba(255,255,255,.14);color:#fff}
+.chip.brand,.chip.ok,.chip.warn{background:rgba(255,255,255,.2);color:#fff}
+.hero-badge{background:rgba(255,255,255,.12);color:#fff;border-color:var(--line)}
+.hb-dot{background:#fff}
+.pm-bar{background:rgba(255,255,255,.16)}.pm-bar span{background:#fff}
+.step-mark{background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.14)}
+.metric{border-top:1px solid #fff;background:transparent !important}
+.cm-row{color:#fff;border-color:var(--line)}
+.cm-row:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.cm-ico{background:rgba(255,255,255,.14);color:#fff}
+.contact-right{background:rgba(0,0,0,.22) !important}
+.founder-photo-frame{background:linear-gradient(135deg,#053a92,#0a53c4) !important}
+.founder-badge{background:#fff;color:#044AB3}
+.srv-tag,.feat-num,.mod-tag{color:var(--blue-2)}
+.ci-icon.ok{background:rgba(255,255,255,.18);color:#fff}
+.ci-icon.bad{background:rgba(255,255,255,.12);color:#fff}
+
+/* — Marquee / scroll-down — */
+.mq-logo{color:rgba(255,255,255,.7)}.mq-logo:hover{color:#fff}
+.trusted-head{color:var(--muted)}
+.scroll-down{color:rgba(255,255,255,.8);left:auto;right:32px;bottom:30px;transform:none;flex-direction:row;gap:10px;align-items:center}
+.scroll-down .sd-line{height:1px;width:44px;background:linear-gradient(90deg,#fff,transparent)}
+.scroll-down .sd-line::after{background:#fff;width:14px;height:1px;top:0;animation:sdrunx 1.8s cubic-bezier(.7,0,.3,1) infinite}
+@keyframes sdrunx{0%{left:-40%}60%,100%{left:100%}}
+
+/* — Video destacado sobre azul — */
+.vfeat{background:var(--black);border-color:var(--line)}
+.vfeat-copy{background:radial-gradient(120% 120% at 100% 0,rgba(4,74,179,.5),transparent 60%),var(--black)}
+.vfeat-copy .vf-eyebrow{color:var(--blue-2)}
+
+/* — Hero + canvas de red — */
+#hero{padding:150px 0 90px}
+#netCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.9;pointer-events:none}
+#hero .hero-copy{position:relative;z-index:2}
+.gradient-band{background:transparent !important}
+
+/* ════ AJUSTES v2 · tamaño de letra + transición + circuitos ════ */
+/* Tipografía más contenida (estaba muy grande) */
+body{font-size:14.5px}
+.display{font-size:clamp(31px,4.8vw,58px) !important;line-height:1.02 !important}
+.h2{font-size:clamp(24px,3.3vw,42px) !important;line-height:1.08 !important}
+.founder-copy h2,.contact-left h3,.vfeat-copy h3{font-size:clamp(22px,2.8vw,36px) !important}
+.hero-sub,.lede{font-size:clamp(14px,1.05vw,16px) !important}
+.srv h4,.feat h4,.step h4,.mod-card h4,.vid-meta h4{font-size:17px}
+
+/* Contenido por encima de la capa de circuitos */
+section,footer{position:relative;z-index:1}
+
+/* Capa de circuitos (parallax al bajar) */
+#circuits{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.16;will-change:transform}
+#circuits path{stroke-dasharray:5 11;animation:flow 3.6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-32}}
+
+/* Transición de página · MOSAICO de cuadros (estilo Cantor8) */
+#pt{position:fixed;inset:0;z-index:3000;pointer-events:none;visibility:hidden}
+#pt.on{visibility:visible}
+#pt .pt-grid{position:absolute;inset:0;display:grid}
+#pt .cell{background:#044AB3;transform:scale(0);transform-origin:center;transition:transform .34s cubic-bezier(.7,0,.3,1)}
+#pt .cell.f{transform:scale(1.03)}
+#pt .cell.cyan{background:#7ec8ff}
+#pt .cell.white{background:#ffffff}
+#pt .pt-mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;display:inline-flex;align-items:center;gap:14px;font-family:'Fragment Mono','Space Mono',monospace;text-transform:uppercase;letter-spacing:.34em;color:#fff;font-size:14px;opacity:0;transition:opacity .25s}
+#pt.covered .pt-mark{opacity:1}
+#pt .pt-mark::before{content:"";width:11px;height:11px;background:#fff;border-radius:2px;animation:ptpulse 1s ease-in-out infinite}
+@keyframes ptpulse{50%{opacity:.35;transform:scale(.65)}}
+@media(prefers-reduced-motion:reduce){#circuits path{animation:none}#pt{display:none}}
+
+/* ════ "PRODUCT SUITE" estilo Cantor8: tarjetas azules con circuito ════ */
+#servicios .srv-head > div:first-child{position:sticky;top:96px}
+.srv-grid{align-items:start}
+.srv:not(.big){background:#044AB3 !important;border:1px solid rgba(255,255,255,.28) !important;color:#fff;overflow:hidden;min-height:270px;transition:transform .5s cubic-bezier(.16,1,.3,1),border-color .3s}
+.srv:not(.big)::before{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='300'%20height='260'%20viewBox='0%200%20300%20260'%3E%3Cg%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.45'%20stroke-width='1'%3E%3Cpath%20d='M150%20130%20H16'/%3E%3Cpath%20d='M150%20130%20H284'/%3E%3Cpath%20d='M150%20130%20V16'/%3E%3Cpath%20d='M150%20130%20V244'/%3E%3Cpath%20d='M55%2038%20H108%20V88'/%3E%3Cpath%20d='M245%2038%20H192%20V88'/%3E%3Cpath%20d='M55%20222%20H108%20V172'/%3E%3Cpath%20d='M245%20222%20H192%20V172'/%3E%3C/g%3E%3Crect%20x='118'%20y='98'%20width='64'%20height='64'%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.75'/%3E%3Cg%20fill='%23ffffff'%20fill-opacity='0.85'%3E%3Ccircle%20cx='16'%20cy='130'%20r='2.4'/%3E%3Ccircle%20cx='284'%20cy='130'%20r='2.4'/%3E%3Ccircle%20cx='150'%20cy='16'%20r='2.4'/%3E%3Ccircle%20cx='150'%20cy='244'%20r='2.4'/%3E%3C/g%3E%3C/svg%3E");background-size:cover;background-position:center;opacity:.6;pointer-events:none;transition:opacity .4s,transform .6s cubic-bezier(.16,1,.3,1)}
+.srv:not(.big):hover::before{opacity:.9;transform:scale(1.04)}
+.srv:not(.big)::after{content:"↗";position:absolute;top:16px;right:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:#fff;color:#044AB3;border-radius:3px;font-size:15px;font-weight:700;z-index:3;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.srv:not(.big):hover::after{transform:translate(3px,-3px)}
+.srv:not(.big):hover{border-color:#fff !important;transform:translateY(-4px)}
+.srv:not(.big) > div{position:relative;z-index:2}
+.srv:not(.big) h4,.srv:not(.big) p{color:#fff !important}
+.srv:not(.big) .srv-tag{color:#fff;background:rgba(255,255,255,.18);padding:4px 9px;border-radius:3px;display:inline-block;backdrop-filter:blur(2px)}
+/* Flotado escalonado (como el gallery de Cantor8) */
+.srv:not(.big):nth-of-type(3n+3){transform:translateY(26px)}
+.srv:not(.big):nth-of-type(3n+1){transform:translateY(10px)}
+@media(max-width:820px){.srv:not(.big){transform:none !important}#servicios .srv-head > div:first-child{position:static}}
+
+/* ════ Trazas de circuito serpenteantes en la sección final (Let's work) ════ */
+.cta-band{overflow:hidden}
+.cta-traces{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.55}
+.cta-traces path{fill:none;stroke:rgba(255,255,255,.34);stroke-width:1.2;stroke-dasharray:7 12;animation:flow 5s linear infinite}
+.cta-traces circle{fill:rgba(255,255,255,.7)}
+.cta-band .wrap-narrow{position:relative;z-index:1}
+</style>
+</head>
+<body>
+<div id="circuits" aria-hidden="true"><svg width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="pcb" width="170" height="170" patternUnits="userSpaceOnUse"><g fill="none" stroke="#dbe8ff" stroke-width="1"><path d="M0 34 H64 L86 56 H170"/><path d="M44 170 V96 L74 66"/><path d="M116 0 V44 L146 74 V170"/><path d="M0 128 H34 L54 108"/><path d="M170 118 H120 L100 138"/></g><g fill="#eaf1ff"><circle cx="64" cy="34" r="2.4"/><circle cx="86" cy="56" r="2.4"/><circle cx="74" cy="66" r="2.4"/><circle cx="116" cy="44" r="2.4"/><circle cx="146" cy="74" r="2.4"/><circle cx="34" cy="128" r="2.4"/><circle cx="120" cy="118" r="2.4"/></g></pattern></defs><rect width="100%" height="100%" fill="url(#pcb)"/></svg></div>
+<div id="pt" aria-hidden="true"><div class="pt-grid" id="ptGrid"></div><span class="pt-mark">CAESI</span></div>
+<nav id="nav">
+<div class="nav-inner">
+<a href="#" class="logo"><img src="logo.webp" alt="CAESI" class="logo-img"/></a>
+<div class="nav-right">
+  <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+</div>
+<!-- Menú desplegable (oculto por defecto) -->
+<div class="menu-panel" id="menuPanel" aria-hidden="true">
+  <div class="menu-inner">
+    <a href="#plataforma" onclick="closeMenu()">Plataforma</a>
+    <a href="#servicios" onclick="closeMenu()">Servicios</a>
+    <a href="#como-funciona" onclick="closeMenu()">Metodología</a>
+    <a href="#portal" onclick="closeMenu()">Portal Cliente</a>
+    <a href="#multas" onclick="closeMenu()">Impugnar multa</a>
+    <a href="#noticias" onclick="closeMenu()">Noticias</a>
+    <a href="#aprende" onclick="closeMenu()">Aprende</a>
+    <a href="#contacto" onclick="closeMenu()">Contacto</a>
+    <a href="manual.html" onclick="closeMenu()">Manual de uso</a>
+  </div>
+</div>
+<!-- Pestañas principales: cada una muestra su propia vista -->
+<div class="tabbar">
+  <div class="tabbar-inner" id="tabbar">
+    <a class="tab-link act" href="#inicio" data-tab="inicio"><span class="tl-dot"></span>Inicio</a>
+    <a class="tab-link" href="#servicios" data-tab="servicios"><span class="tl-dot"></span>Servicios</a>
+    <a class="tab-link" href="#multas" data-tab="multas"><span class="tl-dot"></span>Impugnar multa</a>
+    <a class="tab-link" href="#plataforma" data-tab="plataforma"><span class="tl-dot"></span>Plataforma</a>
+    <a class="tab-link" href="#recursos" data-tab="recursos"><span class="tl-dot"></span>Recursos</a>
+  </div>
+</div>
+</nav>
+
+<style>
+/* ═══ VIDEO DE FONDO · PORTADA ═══ */
+.hero-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;filter:saturate(1.08) contrast(1.02)}
+.hero-bg-tint{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(95% 80% at 50% 34%, rgba(10,22,40,.30), transparent 72%),
+    linear-gradient(180deg, rgba(10,22,40,.80) 0%, rgba(10,22,40,.52) 42%, rgba(10,22,40,.92) 100%)}
+#hero{background:#0a1628}
+#netCanvas{z-index:1 !important}
+#hero .hero-copy{position:relative;z-index:2}
+#hero .trusted-band,#hero .scroll-down{position:relative;z-index:2}
+/* Título y textos legibles sobre el video */
+#hero .display{background:linear-gradient(180deg,#ffffff 0%,#eaf2ff 62%,#cfe0ff 100%) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;color:transparent !important}
+#hero .display em{background:linear-gradient(135deg,#e0b97a,#c8a96a) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;color:transparent !important}
+#hero .hero-sub,#hero .hero-sub b{color:rgba(255,255,255,.92) !important}
+#hero .hero-badge{background:rgba(255,255,255,.10) !important;border-color:rgba(255,255,255,.25) !important;color:#fff !important}
+#hero .hero-trust{border-top-color:rgba(255,255,255,.22) !important}
+#hero .ht-num{color:#fff !important}
+#hero .ht-lbl{color:rgba(255,255,255,.72) !important}
+#hero .trusted-head{color:rgba(255,255,255,.6) !important}
+#hero .mq-logo{color:rgba(255,255,255,.65) !important}
+#hero .btn:not(.btn-blue){border-color:rgba(255,255,255,.5);color:#fff;background:rgba(255,255,255,.04)}
+#hero .btn:not(.btn-blue) .arrow{background:#fff;color:var(--ink)}
+#hero .btn:not(.btn-blue):hover{background:#fff;color:var(--ink)}
+@media(prefers-reduced-motion:reduce){.hero-bg-video{display:none}}
+</style>
+<section id="hero" data-view="inicio" class="act">
+<video class="hero-bg-video" autoplay muted loop playsinline preload="auto" poster="https://images.pexels.com/videos/29919008/pexels-photo-29919008.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750" aria-hidden="true">
+  <source src="https://videos.pexels.com/video-files/29919008/12841733_1920_1080_30fps.mp4" type="video/mp4">
+</video>
+<div class="hero-bg-tint" aria-hidden="true"></div>
+<canvas id="netCanvas" aria-hidden="true"></canvas>
+<div class="hero-copy">
+<div class="hero-badge reveal"><span class="hb-dot"></span> 15 años protegiendo empresas mexicanas · Ahora con plataforma</div>
+<h1 class="display reveal d1">Tu empresa lista<br>para auditoría, <em>siempre.</em></h1>
+<p class="hero-sub reveal d2"><b style="color:var(--ink);font-weight:700">Llevamos 15 años ayudando a empresas a cumplir con la STPS, Protección Civil y Medio Ambiente.</b> Ahora lo hacemos desde una plataforma: ordenamos tus papeles, te avisamos antes de cada vencimiento, te acompañamos ante el inspector y, si ya te multaron, la impugnamos.</p>
+<div class="hero-actions reveal d3">
+<a href="#contacto" class="btn btn-blue" onclick="trackEvent('cta_click',{location:'hero',label:'evaluacion'})">Agenda tu evaluación <span class="arrow">→</span></a>
+<a href="#aprende" class="btn" onclick="trackEvent('cta_click',{location:'hero',label:'ver_inspeccion'})">Cómo atender una inspección <span class="arrow">→</span></a>
+</div>
+<div class="hero-trust reveal d3">
+<div class="ht-item"><span class="ht-num">15+</span><span class="ht-lbl">años de experiencia</span></div>
+<div class="ht-item"><span class="ht-num">500+</span><span class="ht-lbl">empresas protegidas</span></div>
+<div class="ht-item"><span class="ht-num">$0</span><span class="ht-lbl">en multas para clientes activos</span></div>
+<div class="ht-item"><span class="ht-num">94%</span><span class="ht-lbl">score promedio STPS</span></div>
+</div>
+</div>
+
+<div class="trusted-band">
+  <div class="trusted-head">Operado por equipos de seguridad e higiene en</div>
+  <div class="marquee" style="margin-top:24px">
+    <div class="marquee-track">
+      <span class="mq-logo">ALFA<small>Manufactura</small></span>
+      <span class="mq-logo">VERTEX<small>Construcción</small></span>
+      <span class="mq-logo">NORDIA<small>Logística</small></span>
+      <span class="mq-logo">QORE<small>Farmacéutica</small></span>
+      <span class="mq-logo">LUMA<small>Servicios</small></span>
+      <span class="mq-logo">HELIX<small>Agroindustria</small></span>
+      <span class="mq-logo" aria-hidden="true">ALFA<small>Manufactura</small></span>
+      <span class="mq-logo" aria-hidden="true">VERTEX<small>Construcción</small></span>
+      <span class="mq-logo" aria-hidden="true">NORDIA<small>Logística</small></span>
+      <span class="mq-logo" aria-hidden="true">QORE<small>Farmacéutica</small></span>
+      <span class="mq-logo" aria-hidden="true">LUMA<small>Servicios</small></span>
+      <span class="mq-logo" aria-hidden="true">HELIX<small>Agroindustria</small></span>
+    </div>
+  </div>
+</div>
+<div class="scroll-down" aria-hidden="true">scroll<span class="sd-line"></span></div>
+</section>
+
+<section class="section act" data-view="inicio">
+<div class="wrap split">
+<div class="reveal">
+<h2 class="h2">Si tienes empleados,<br>el gobierno te va a <em>auditar.</em><br>Nosotros te dejamos listo.</h2>
+</div>
+<div class="reveal d2">
+<p class="lede">Toda empresa en México con empleados está obligada a cumplir las Normas Oficiales de la STPS y Protección Civil. <b style="color:var(--ink)">Una sola NOM mal documentada puede costarte hasta $565,000 MXN en multas.</b> CAESI se encarga de que tu empresa nunca esté en esa lista.</p>
+<div style="margin-top:24px;display:flex;flex-wrap:wrap;gap:10px">
+<span style="font-size:12px;font-weight:600;background:#fef3c7;color:#92400e;padding:6px 12px;border-radius:999px">Multa promedio: $50,000 — $565,000 MXN</span>
+</div>
+</div>
+</div>
+<div class="wrap">
+<div class="feat-grid">
+<div class="feat reveal">
+<div class="feat-num">01 — ORDEN</div>
+<h4>Tus papeles, en un solo lugar</h4>
+<p>Contratos, capacitaciones, expedientes médicos, brigadas, programas internos. Todo digitalizado, ordenado por área y siempre a la mano cuando llegue el inspector.</p>
+</div>
+<div class="feat reveal d2">
+<div class="feat-num">02 — AVISO ANTICIPADO</div>
+<h4>Te avisamos antes que la autoridad</h4>
+<p>El sistema te notifica 30, 15 y 7 días antes de que cualquier documento o capacitación caduque. Nada se te pasa, nada genera multa.</p>
+</div>
+<div class="feat reveal d3">
+<div class="feat-num">03 — ACOMPAÑAMIENTO</div>
+<h4>Estamos contigo en cada inspección</h4>
+<p>Cuando llegue la STPS o Protección Civil, no estás solo. Nuestro equipo legal y técnico te acompaña y responde con evidencia en línea desde tu portal.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ═══════ Video de introducción (servicios en 1 min) ═══════ -->
+<section class="section act" data-view="inicio">
+  <div class="wrap split" style="align-items:center">
+    <div class="reveal">
+      <div class="sec-index"><span class="si-n">00</span> Conócenos en 1 minuto</div>
+      <h2 class="h2">Quiénes somos y<br>qué hacemos por tu <em>empresa.</em></h2>
+      <p class="lede" style="margin-top:20px">Un vistazo rápido a cómo acompañamos a las empresas mexicanas frente a la STPS, Protección Civil y Medio Ambiente — de la mano de nuestro equipo en campo.</p>
+      <div style="margin-top:24px"><a href="#contacto" class="btn btn-blue">Agenda tu evaluación <span class="arrow">→</span></a></div>
+    </div>
+    <div class="reveal d2">
+      <!-- REEMPLAZAR: cambia el data-yt (aquí y en la URL del poster) por el ID de tu video intro real. Debe ser un video que PERMITA incrustación, o dará Error 153. -->
+      <div class="introvid" data-yt="YsiA7w799wY" onclick="playIntro(this)" role="button" tabindex="0" aria-label="Reproducir video de introducción">
+        <div class="introvid-poster" style="background-image:url('https://i.ytimg.com/vi/YsiA7w799wY/hqdefault.jpg')"></div>
+        <div class="introvid-play">
+          <span class="iv-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg></span>
+          <span class="iv-cap">Video de introducción</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="solucion" class="gradient-band act" data-view="inicio">
+<div class="wrap">
+<div style="max-width:780px" class="reveal">
+<div class="eyebrow-serif">El problema tradicional.</div>
+<h2 class="h2">El caos documental le cuesta<br>tiempo, dinero y <em>tranquilidad</em> a tu empresa.</h2>
+</div>
+<div class="compare">
+<div class="compare-card reveal">
+<div class="lbl">Antes de CAESI</div>
+<h3>Operación fragmentada</h3>
+<div class="ci-list">
+<div class="ci-item"><div class="ci-icon bad">!</div><div class="ci-text"><b>Documentos perdidos</b>Archivos viajando entre WhatsApp, drives personales y carpetas físicas.</div></div>
+<div class="ci-item"><div class="ci-icon bad">!</div><div class="ci-text"><b>Auditorías de último momento</b>Reuniones de emergencia para armar expedientes ante una inspección.</div></div>
+<div class="ci-item"><div class="ci-icon bad">!</div><div class="ci-text"><b>Vencimientos invisibles</b>NOMs y DC-3 caducados sin que nadie se entere a tiempo.</div></div>
+<div class="ci-item"><div class="ci-icon bad">!</div><div class="ci-text"><b>Seguimiento manual</b>Excel, correos y minutas para algo que debería estar automatizado.</div></div>
+</div>
+</div>
+<div class="compare-card is-good reveal d2">
+<div class="lbl">Con CAESI</div>
+<h3>Ecosistema centralizado</h3>
+<div class="ci-list">
+<div class="ci-item"><div class="ci-icon ok">✓</div><div class="ci-text"><b>Portal cliente 24/7</b>Visibilidad total del estatus: sube y descarga evidencias en un clic.</div></div>
+<div class="ci-item"><div class="ci-icon ok">✓</div><div class="ci-text"><b>Auditoría continua</b>El sistema audita todos los días, no solo cuando llega la STPS.</div></div>
+<div class="ci-item"><div class="ci-icon ok">✓</div><div class="ci-text"><b>Alertas inteligentes</b>Renovaciones, vencimientos y pendientes notificados con anticipación.</div></div>
+<div class="ci-item"><div class="ci-icon ok">✓</div><div class="ci-text"><b>Seguimiento automatizado</b>Flujos documentales con responsables, plazos y trazabilidad total.</div></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="servicios" class="section" data-view="servicios">
+<div class="wrap">
+<div class="srv-head">
+<div class="reveal">
+<div class="eyebrow-serif">Todo bajo un mismo techo.</div>
+<h2 class="h2">15 años cubriendo<br>cada riesgo legal de tu <em>empresa.</em></h2>
+</div>
+<div class="reveal d2">
+<p class="lede">Seguridad industrial, ecología, capacitación, protección civil, brigadas e impugnación de multas. CAESI cubre todo lo que la autoridad mexicana te puede pedir — y ahora todo se administra desde un solo portal.</p>
+<div style="margin-top:24px"><a href="#contacto" class="btn btn-sm">Agenda una evaluación <span class="arrow">→</span></a></div>
+</div>
+</div>
+<div class="srv-grid">
+<div class="srv big reveal">
+<div>
+<div class="srv-tag">⚖️ Núcleo CAESI</div>
+<h4 style="font-size:24px;margin-top:14px;letter-spacing:-0.02em">Impugnación de multas STPS</h4>
+<p style="margin-top:10px;max-width:80%">¿Ya te multaron? Llevamos 15 años impugnando procedimientos administrativos sancionadores con éxito. Recuperamos dinero y borramos antecedentes.</p>
+</div>
+<div style="position:relative;z-index:2"><a href="#multas" class="btn btn-ghost btn-sm">Quiero impugnar <span class="arrow">→</span></a></div>
+<div class="srv-vis"></div>
+</div>
+<div class="srv teal reveal d1"><div><div class="srv-tag">STPS</div><h4 style="margin-top:10px">Cumplimiento NOMs</h4><p>NOM-035, 030, 019, 017, 009 (alturas), 006 (montacargas). Implementación y evidencias.</p></div></div>
+<div class="srv gold reveal d2"><div><div class="srv-tag">Ecología</div><h4 style="margin-top:10px">Medio Ambiente &amp; MAU</h4><p>Manifestación Ambiental Única (MAU), estudios ambientales, cédulas de operación y reportes a SEMARNAT.</p></div></div>
+<div class="srv reveal"><div><div class="srv-tag">Capacitación</div><h4 style="margin-top:10px">DC-3 &amp; cursos especiales</h4><p>Trabajos en alturas, montacargas, espacios confinados, RCP, primeros auxilios y contra incendios.</p></div></div>
+<div class="srv reveal d1"><div><div class="srv-tag">Protección Civil</div><h4 style="margin-top:10px">Programa Interno PC</h4><p>Programas internos, rutas de evacuación, brigadas, simulacros y registro ante autoridad local.</p></div></div>
+<div class="srv reveal d2"><div><div class="srv-tag">Brigadas</div><h4 style="margin-top:10px">Brigadas de emergencia</h4><p>Formación, equipamiento y certificación de brigadas: incendios, evacuación, primeros auxilios y comunicación.</p></div></div>
+<div class="srv reveal d3"><div><div class="srv-tag">Cumplimiento</div><h4 style="margin-top:10px">Auditorías &amp; cumplimiento de normas</h4><p>Diagnóstico, cierre de brechas y acompañamiento continuo para mantener cada NOM y requisito al día ante la autoridad.</p></div></div>
+</div>
+</div>
+</section>
+
+
+<section id="ai" class="ai-band" data-view="servicios">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;max-width:780px;margin:0 auto">
+      <div class="eyebrow-serif">Inteligencia operativa.</div>
+      <h2 class="h2">Tu cumplimiento STPS<br>asistido por <em>IA en tiempo real.</em></h2>
+      <p class="lede lede-center" style="margin:22px auto 0">El Copiloto CAESI analiza tus evidencias, detecta faltantes, predice riesgos de inspección y prioriza pendientes — antes de que la autoridad llegue.</p>
+    </div>
+
+    <div class="ai-grid">
+      <div class="ai-copy reveal">
+        <h2 class="h2" style="font-size:clamp(28px,3.4vw,42px)">Menos reuniones,<br><em>más decisiones.</em></h2>
+        <p class="lede" style="margin-top:18px">El Copiloto CAESI lee tus expedientes, contrasta las NOM vigentes y te dice qué hacer hoy. Sin tableros confusos. Sin búsquedas manuales.</p>
+        <div class="ai-features">
+          <div class="ai-feature">
+            <div class="ai-feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></div>
+            <div class="ai-feature-text">Clasificación automática<small>Documentos etiquetados por norma al subirlos</small></div>
+          </div>
+          <div class="ai-feature">
+            <div class="ai-feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+            <div class="ai-feature-text">Búsqueda semántica<small>"¿Tengo el acta CMSH 2024?" — instantáneo</small></div>
+          </div>
+          <div class="ai-feature">
+            <div class="ai-feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16V8M12 16v-5M17 16v-7"/></svg></div>
+            <div class="ai-feature-text">Scoring institucional<small>Tu probabilidad de auditoría limpia</small></div>
+          </div>
+          <div class="ai-feature">
+            <div class="ai-feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="ai-feature-text">Priorización IA<small>El sistema te dice qué resolver primero</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-mockup reveal d2">
+        <div class="ai-mock-head">
+          <div class="ai-mock-orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4zM6 20h12M20 16v4M4 16v4"/></svg></div>
+          <div class="ai-mock-title">Copiloto CAESI</div>
+          <div class="ai-mock-tag">● En vivo</div>
+        </div>
+        <div class="ai-message">
+          <span class="ai-tag crit">Crítico</span>
+          <b>Grupo Industrial Monterrey:</b> Detecté que el simulacro de incendio anual venció hace 11 días. Se requiere para NOM-002. Riesgo de multa: <b>$120K – $565K</b>.
+        </div>
+        <div class="ai-message">
+          <span class="ai-tag warn">Atención</span>
+          <b>Plásticos del Bajío:</b> Faltan 4 evidencias de NOM-035 antes del 22 de mayo (auditoría programada). Sugerencia: enviar solicitud al cliente <b>hoy</b>.
+        </div>
+        <div class="ai-message">
+          <span class="ai-tag ok">Insight</span>
+          Ing. Carlos cerró <b>3 expedientes</b> esta semana. Es el más productivo del equipo. Considera asignarle <b>Maquiladora del Norte</b>.
+        </div>
+        <div class="ai-input">¿Qué empresas necesitan atención hoy?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="multas" class="multas-band" data-view="multas">
+<div class="wrap">
+<div class="multas-grid">
+<div class="reveal">
+<div class="eyebrow-serif" style="color:#fca5a5">¿Ya te llegó una multa?</div>
+<h2 class="h2" style="color:#fff">La <em style="color:var(--gold-warm)">impugnamos.</em></h2>
+<p style="color:rgba(255,255,255,.78);font-size:17px;line-height:1.65;max-width:520px;margin-top:20px">La STPS, Protección Civil o SEMARNAT te impusieron una multa por incumplimiento. <b style="color:#fff">No firmes. No pagues.</b> Llevamos 15 años impugnando procedimientos administrativos sancionadores — la mayoría de las multas se reducen o se cancelan por completo.</p>
+<div class="multas-stats">
+<div class="ms-item"><div class="ms-num">87%</div><div class="ms-lbl">de multas reducidas o canceladas</div></div>
+<div class="ms-item"><div class="ms-num">$12M+</div><div class="ms-lbl">recuperados para clientes</div></div>
+<div class="ms-item"><div class="ms-num">15 días</div><div class="ms-lbl">plazo crítico para responder</div></div>
+</div>
+<div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap">
+<a href="mailto:contacto@caesi.com" class="btn btn-gold">Impugnar mi multa <span class="arrow">→</span></a>
+<a href="#contacto" class="btn btn-ghost">Hablar con un abogado <span class="arrow">→</span></a>
+</div>
+</div>
+<div class="multas-card reveal d2">
+<div class="mc-row"><span class="mc-tag">Caso real · 2025</span></div>
+<div class="mc-amount"><span class="mc-cross">$432,800</span> <span class="mc-final">$0</span></div>
+<div class="mc-lbl">Multa STPS por NOM-035 cancelada</div>
+<div class="mc-steps">
+<div class="mc-step"><span class="mc-n">1</span> Empresa cliente recibe acta STPS</div>
+<div class="mc-step"><span class="mc-n">2</span> CAESI analiza vicios procesales en 24h</div>
+<div class="mc-step"><span class="mc-n">3</span> Promovemos recurso de revisión</div>
+<div class="mc-step done"><span class="mc-n">✓</span> Resolución: multa cancelada</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="como-funciona" class="steps-wrap" data-view="plataforma">
+<div class="wrap steps-head reveal">
+<div class="eyebrow-serif">Onboarding empresarial.</div>
+<h2 class="h2">Del caos al control en <em>cuatro pasos.</em></h2>
+<p class="lede lede-center" style="margin-top:24px">Nuestro proceso fue diseñado para que tu equipo no pause su operación mientras CAESI toma control del cumplimiento.</p>
+</div>
+<div class="wrap steps">
+<div class="step reveal"><div class="step-n">01</div><div class="step-mark"></div><h4>Diagnóstico empresarial</h4><p>Mapeamos riesgos, NOMs aplicables y huecos documentales en menos de 5 días hábiles.</p></div>
+<div class="step reveal d1"><div class="step-n">02</div><div class="step-mark"></div><h4>Onboarding al portal</h4><p>Activamos tu Portal CAESI con estructura, usuarios y flujos personalizados.</p></div>
+<div class="step reveal d2"><div class="step-n">03</div><div class="step-mark"></div><h4>Automatización documental</h4><p>El sistema audita, valida y alerta. Tu equipo solo carga, firma y aprueba.</p></div>
+<div class="step reveal d3"><div class="step-n">04</div><div class="step-mark"></div><h4>Empresa lista para auditoría</h4><p>Score arriba del 90%, expediente blindado y reportes ejecutivos al instante.</p></div>
+</div>
+</section>
+
+<section id="portal" class="portal-band" data-view="plataforma">
+<div class="wrap">
+<div style="max-width:820px" class="reveal">
+<div class="eyebrow-serif">Tu empresa, conectada en tiempo real.</div>
+<h2 class="h2">El portal cliente que reemplaza<br>las carpetas, el Excel y el <em>WhatsApp.</em></h2>
+</div>
+<div class="portal-grid">
+<div class="portal-copy reveal">
+<p class="lede" style="max-width:520px">Cada empresa cliente entra a su propio portal CAESI. Visibilidad total, sin esperar a que un asesor envíe un correo. Auditable, transparente y siempre actualizado.</p>
+<ul>
+<li>Consultar avances de cumplimiento por área y NOM</li>
+<li>Subir documentos y recibir validación automática</li>
+<li>Monitorear vencimientos y pendientes críticos</li>
+<li>Acceder a reportes ejecutivos listos para Dirección</li>
+<li>Recibir alertas antes de cualquier inspección STPS</li>
+</ul>
+<div class="portal-actions">
+<a href="#contacto" class="btn btn-gold">Solicitar acceso <span class="arrow">→</span></a>
+</div>
+</div>
+<div class="portal-mock reveal d2">
+<div class="pm-card">
+<div class="pm-row">
+<div><div class="pm-title">Cumplimiento global</div><div class="pm-sub">Corporativo Alfa · Periodo 2026</div></div>
+<div class="chip ok">Activo</div>
+</div>
+<div class="pm-grid2" style="margin-top:14px">
+<div class="pm-mini"><div class="v">94<span style="font-size:14px;font-weight:600;color:var(--muted)">%</span></div><div class="l">Score STPS</div></div>
+<div class="pm-mini"><div class="v">12<span style="font-size:14px;font-weight:600;color:var(--muted)">/14</span></div><div class="l">NOMs cubiertas</div></div>
+</div>
+</div>
+<div class="pm-card">
+<div class="pm-row"><div class="pm-title">Expedientes activos</div><div class="chip brand">5 en proceso</div></div>
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:14px">
+<div><div class="pm-row" style="font-size:12.5px"><span style="font-weight:600">NOM-035 — Riesgo Psicosocial</span><span style="color:var(--muted);font-weight:700">92%</span></div><div class="pm-bar"><span style="width:92%"></span></div></div>
+<div><div class="pm-row" style="font-size:12.5px"><span style="font-weight:600">Programa Protección Civil</span><span style="color:var(--muted);font-weight:700">78%</span></div><div class="pm-bar"><span style="width:78%"></span></div></div>
+<div><div class="pm-row" style="font-size:12.5px"><span style="font-weight:600">DC-3 / Brigadas</span><span style="color:var(--muted);font-weight:700">64%</span></div><div class="pm-bar"><span style="width:64%"></span></div></div>
+</div>
+</div>
+<div class="pm-card">
+<div class="pm-row"><div class="pm-title">Timeline de cumplimiento</div><div class="chip warn">2 vencimientos</div></div>
+<div class="pm-timeline" style="margin-top:14px">
+<div class="pm-tl"><span class="dot ok"></span>NOM-035 validada por consultor · <span class="t">hoy</span></div>
+<div class="pm-tl"><span class="dot"></span>Carga de evidencias DC-3 · <span class="t">en revisión</span></div>
+<div class="pm-tl"><span class="dot warn"></span>Renovación de brigada interna · <span class="t">vence en 18 días</span></div>
+<div class="pm-tl"><span class="dot"></span>Auditoría interna trimestral · <span class="t">programada 24 de mayo</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+<section class="sec-compliance" data-view="plataforma">
+  <div class="wrap">
+    <div style="text-align:center;max-width:780px;margin:0 auto" class="reveal">
+      <div class="eyebrow-serif" style="color:#e0b97a">Seguridad institucional.</div>
+      <h2 class="h2">Hecho para empresas<br>que <em>no pueden fallar.</em></h2>
+      <p class="lede lede-center" style="margin:22px auto 0">Plataforma con arquitectura segura, respaldos diarios cifrados, control de roles granular y trazabilidad completa de cada acción. NDA firmado desde el día uno con cada cliente.</p>
+    </div>
+
+    <div class="cert-grid">
+      <div class="cert-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <h5>Cifrado TLS 1.3</h5>
+        <p>Toda comunicación entre cliente, portal y servidores con cifrado militar de extremo a extremo.</p>
+      </div>
+      <div class="cert-card reveal d1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7M16 12h6M19 9v6"/></svg>
+        <h5>Respaldos diarios</h5>
+        <p>Replicación automática a 3 zonas geográficas. RPO &lt;1 hora, RTO &lt;4 horas.</p>
+      </div>
+      <div class="cert-card reveal d2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        <h5>Control de roles</h5>
+        <p>Director · Ingeniero · Auditor · Cliente. Permisos granulares por módulo. Audit log inviolable.</p>
+      </div>
+      <div class="cert-card reveal d3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h5>NDA blindado</h5>
+        <p>Acuerdo de confidencialidad firmado con cada cliente. Tus expedientes nunca salen del ecosistema CAESI.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" class="contact-band act" data-view="inicio">
+<div class="wrap">
+<div class="wz-head reveal" style="text-align:center;max-width:760px;margin:0 auto">
+<div class="sec-index"><span class="si-n">05</span> Contacto directo</div>
+<h2 class="h2">Cada empresa es distinta.<br>Tu caso se revisa <em>de forma personalizada.</em></h2>
+<p class="lede lede-center" style="margin-top:22px">No trabajamos con estimados automáticos: un especialista analiza tu operación, tus normas aplicables y tu nivel de riesgo antes de proponerte nada. Escríbenos y agendamos tu evaluación.</p>
+</div>
+
+<div class="contact-card reveal d2">
+  <div class="contact-left">
+    <h3>Hablemos de tu cumplimiento</h3>
+    <p>Déjanos tus datos por el canal que prefieras. Te respondemos con una evaluación real de tu situación — sin compromiso.</p>
+    <div class="contact-methods">
+      <a class="cm-row" href="mailto:contacto@caesi.com?subject=Solicitud%20de%20evaluaci%C3%B3n%20CAESI" onclick="trackEvent('contacto_click',{canal:'email'})">
+        <span class="cm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+        <span><b>contacto@caesi.com</b><small>Escríbenos tu caso y lo revisamos</small></span>
+      </a>
+      <a class="cm-row" href="https://wa.me/5215500000000?text=Hola%20CAESI%2C%20quiero%20agendar%20una%20evaluaci%C3%B3n" target="_blank" rel="noopener noreferrer" onclick="trackEvent('contacto_click',{canal:'whatsapp'})">
+        <span class="cm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l2.2-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg></span>
+        <span><b>WhatsApp directo</b><small>REEMPLAZAR: pon aquí tu número real de WhatsApp</small></span>
+      </a>
+      <a class="cm-row" href="tel:+525500000000" onclick="trackEvent('contacto_click',{canal:'tel'})">
+        <span class="cm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>
+        <span><b>+52 55 0000 0000</b><small>REEMPLAZAR: teléfono directo de la firma</small></span>
+      </a>
+    </div>
+    <form id="leadForm" class="lead-form" onsubmit="return enviarLead(event)">
+      <div class="lf-title">O déjanos tus datos y te contactamos:</div>
+      <div class="lf-row">
+        <input id="lf_nombre" type="text" placeholder="Tu nombre *" required autocomplete="name">
+        <input id="lf_empresa" type="text" placeholder="Empresa" autocomplete="organization">
+      </div>
+      <div class="lf-row">
+        <input id="lf_tel" type="text" placeholder="WhatsApp / teléfono *" required>
+        <input id="lf_email" type="email" placeholder="Correo (opcional)" autocomplete="email">
+      </div>
+      <textarea id="lf_msg" rows="2" placeholder="Cuéntanos brevemente tu caso"></textarea>
+      <button type="submit" class="btn btn-blue" id="lf_btn" style="width:100%;justify-content:center">Enviar solicitud <span class="arrow">→</span></button>
+      <div id="lf_ok" class="lf-ok"></div>
+    </form>
+    <style>
+      .lead-form{margin-top:24px;border-top:1px solid rgba(255,255,255,.12);padding-top:20px}
+      .lf-title{font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:12px}
+      .lf-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+      .lf-row input{flex:1;min-width:150px}
+      .lead-form input,.lead-form textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:12px 14px;color:#f1f5f9;font-size:14px;font-family:inherit}
+      .lead-form input::placeholder,.lead-form textarea::placeholder{color:#94a3b8}
+      .lead-form input:focus,.lead-form textarea:focus{outline:none;border-color:#38bdf8}
+      .lead-form textarea{margin-bottom:14px;resize:vertical}
+      .lf-ok{margin-top:12px;font-size:13.5px;font-weight:600;display:none;padding:11px 13px;border-radius:10px}
+      .lf-ok.show{display:block}
+      .lf-ok.good{background:rgba(16,185,129,.14);border:1px solid rgba(16,185,129,.4);color:#6ee7b7}
+      .lf-ok.bad{background:rgba(239,68,68,.14);border:1px solid rgba(239,68,68,.4);color:#fca5a5}
+    </style>
+  </div>
+  <div class="contact-right">
+    <div class="cr-eyebrow">Lo que revisamos contigo</div>
+    <h3 style="font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.15">Una evaluación seria, no un número al azar</h3>
+    <ul>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg> Impugnación de multas STPS, Protección Civil y SEMARNAT</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg> Cumplimiento de normas y cierre de brechas documentales</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg> Manifestación Ambiental Única (MAU) y trámites ecológicos</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg> Protección Civil, programas internos y brigadas de emergencia</li>
+    </ul>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="metrics-wrap act" data-view="inicio">
+<div class="wrap metrics-head">
+<div class="reveal">
+<div class="eyebrow-serif">Impacto medible.</div>
+<h2 class="h2">Números que sienten<br>tus equipos <em>desde el día uno.</em></h2>
+</div>
+<div class="reveal d2">
+<p class="lede">Empresas que automatizan su cumplimiento con CAESI reducen tiempo administrativo, eliminan riesgos y entran a auditoría con expediente blindado.</p>
+</div>
+</div>
+<div class="wrap metrics-grid">
+<div class="metric reveal"><div class="num">73<span>%</span></div><div class="lbl">Menos tiempo administrativo</div><p>Procesos documentales que tomaban semanas ahora se cierran en horas.</p></div>
+<div class="metric reveal d1"><div class="num">94<span>%</span></div><div class="lbl">Score promedio de cumplimiento</div><p>Empresas operando con CAESI llegan a la inspección STPS con expediente listo.</p></div>
+<div class="metric reveal d2"><div class="num">0<span>x</span></div><div class="lbl">Multas por documentos vencidos</div><p>Alertas predictivas avisan antes de que cualquier certificado caduque.</p></div>
+<div class="metric reveal d3"><div class="num">24<span>/7</span></div><div class="lbl">Visibilidad en tiempo real</div><p>Dirección, RH y SST consultan el mismo dashboard, sin esperar reportes.</p></div>
+</div>
+</section>
+
+<section id="fundador" class="founder-band act" data-view="inicio">
+<div class="wrap">
+  <div class="founder-grid">
+    <div class="founder-photo reveal">
+      <div class="founder-photo-frame">
+        <img src="foto.webp" alt="Lic. Jorge Juárez — Director General de CAESI" loading="lazy" decoding="async" width="420" height="525"/>
+      </div>
+      <div class="founder-badge">
+        <span class="fb-num">15</span>
+        <span class="fb-txt">años protegiendo<br>empresas mexicanas</span>
+      </div>
+    </div>
+    <div class="founder-copy reveal d2">
+      <div class="eyebrow-serif">Detrás de CAESI hay una persona.</div>
+      <h2 class="h2">Cuando la STPS toca a tu puerta,<br>quiero que sepas <em>quién te respalda.</em></h2>
+      <p class="lede" style="margin-top:22px">Llevamos más de una década acompañando a empresas mexicanas frente a inspecciones, multas y auditorías. Hemos visto de todo — y por eso construimos CAESI: para que ninguna empresa vuelva a perder dinero, tiempo o tranquilidad por un papel mal archivado.</p>
+      <p class="lede" style="margin-top:18px">Mi compromiso personal con cada cliente: si la autoridad llega, ustedes no enfrentan eso solos. Mi equipo legal y técnico está, mi teléfono está, y el portal está — siempre.</p>
+      <div class="founder-sign">
+        <div class="founder-name">Lic. Jorge Juárez</div>
+        <div class="founder-role">Director General · CAESI Consultoría Industrial</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════ Galería de autoridad (prueba social institucional) ═══════ -->
+<section class="auth-band act" data-view="inicio">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;max-width:760px;margin:0 auto">
+      <div class="sec-index"><span class="si-n">03</span> Presencia institucional</div>
+      <h2 class="h2">Cerca de las<br><em>autoridades correctas.</em></h2>
+      <p class="lede lede-center" style="margin:22px auto 0">Nuestro trabajo nos ha llevado a colaborar y coincidir con dependencias y figuras de autoridad. Estas son algunas de esas presencias.</p>
+    </div>
+    <div class="auth-grid">
+      <!-- ═══ REEMPLAZAR cada bloque por una foto real ═══
+           Estructura para foto real:
+           <div class="auth-item reveal">
+             <img src="fotos/autoridad-1.webp" alt="Reunión con la Secretaría de Economía">
+             <div class="auth-cap">Secretaría de Economía<small>Evento institucional 2025</small></div>
+           </div>
+      -->
+      <div class="auth-item reveal">
+        <div class="auth-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg><b>Foto con autoridad 1</b><span>Ej. reunión con la Secretaría de Economía</span></div>
+      </div>
+      <div class="auth-item reveal d1">
+        <div class="auth-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg><b>Foto con autoridad 2</b><span>Ej. evento STPS / Protección Civil</span></div>
+      </div>
+      <div class="auth-item reveal d2">
+        <div class="auth-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg><b>Foto con autoridad 3</b><span>Ej. reconocimiento o firma de convenio</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="noticias" class="news-band" data-view="recursos">
+<div class="wrap">
+  <div class="news-head">
+    <div class="reveal">
+      <div class="eyebrow-serif">Cumplimiento al día.</div>
+      <h2 class="h2">Noticias STPS y NOMs<br><em>actualizadas en tiempo real.</em></h2>
+    </div>
+    <div class="reveal d2">
+      <p class="lede">Mantente al tanto de cada reforma, nueva norma o resolución que afecte el cumplimiento de tu empresa. Esta sección se alimenta automáticamente del DOF, STPS y medios oficiales.</p>
+      <div class="news-status" id="newsStatus">
+        <span class="ns-dot"></span>
+        <span class="ns-txt">Cargando últimas noticias…</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="news-grid" id="newsGrid">
+    <!-- Skeleton inicial mientras carga el feed -->
+    <div class="news-card news-skel"><div class="ns-line"></div><div class="ns-line short"></div><div class="ns-line tiny"></div></div>
+    <div class="news-card news-skel"><div class="ns-line"></div><div class="ns-line short"></div><div class="ns-line tiny"></div></div>
+    <div class="news-card news-skel"><div class="ns-line"></div><div class="ns-line short"></div><div class="ns-line tiny"></div></div>
+    <div class="news-card news-skel"><div class="ns-line"></div><div class="ns-line short"></div><div class="ns-line tiny"></div></div>
+    <div class="news-card news-skel"><div class="ns-line"></div><div class="ns-line short"></div><div class="ns-line tiny"></div></div>
+    <div class="news-card news-skel"><div class="ns-line"></div><div class="ns-line short"></div><div class="ns-line tiny"></div></div>
+  </div>
+</div>
+</section>
+
+<section id="aprende" class="videos-band" data-view="recursos">
+<div class="wrap">
+  <div class="vid-head">
+    <div class="reveal">
+      <div class="sec-index"><span class="si-n">04</span> Centro de aprendizaje · Acceso libre</div>
+      <h2 class="h2">Aprende cumplimiento STPS<br>directo con <em>quien lo vive.</em></h2>
+    </div>
+    <div class="reveal d2">
+      <p class="lede">Capacitaciones reales sobre inspecciones, NOMs y comisiones de seguridad — explicadas en lenguaje claro. Contenido educativo de <b style="color:var(--ink)">High Rise</b>, el mismo material que usamos con nuestros clientes.</p>
+    </div>
+  </div>
+
+  <!-- ═══ Video destacado: cómo atender una inspección STPS ═══ -->
+  <div class="vfeat reveal" style="margin-bottom:28px">
+    <div class="vembed yt-auto" data-yt="YsiA7w799wY">
+      <img class="vembed-poster" loading="lazy" src="https://i.ytimg.com/vi/YsiA7w799wY/hqdefault.jpg" alt="¿Cómo atender una inspección de la STPS?"/>
+      <span class="yt-live">En reproducción</span>
+    </div>
+    <div class="vfeat-copy">
+      <div class="vf-eyebrow">▶ Video destacado</div>
+      <h3>¿Cómo atender una visita de inspección de la STPS?</h3>
+      <p>Qué hacer en el momento exacto en que llega el inspector: qué mostrar, qué firmar, qué NO firmar y cómo proteger a tu empresa paso a paso.</p>
+      <div class="vfeat-chan"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ff0000"><path d="M23 12s0-3.9-.5-5.8a3 3 0 0 0-2.1-2.1C18.5 3.5 12 3.5 12 3.5s-6.5 0-8.4.6A3 3 0 0 0 1.5 6.2C1 8.1 1 12 1 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 8.4.6 8.4.6s6.5 0 8.4-.6a3 3 0 0 0 2.1-2.1C23 15.9 23 12 23 12z"/><path d="M10 15.5 15.5 12 10 8.5z" fill="#fff"/></svg> Canal <b>High Rise</b> · educación en seguridad e higiene</div>
+    </div>
+  </div>
+
+  <div class="vid-grid">
+    <!-- Proceso de Inspección STPS -->
+    <a class="vid-card reveal" href="https://www.youtube.com/watch?v=YsiA7w799wY" target="_blank" rel="noopener noreferrer" data-yt="YsiA7w799wY" onclick="trackVideoClick('YsiA7w799wY')">
+      <div class="vid-thumb">
+        <img loading="lazy" src="https://i.ytimg.com/vi/YsiA7w799wY/hqdefault.jpg" alt="Proceso de Inspección de la STPS"/>
+        <div class="vid-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg></div>
+      </div>
+      <div class="vid-meta">
+        <span class="vid-tag">Inspecciones</span>
+        <h4>Proceso de Inspección de la STPS</h4>
+        <p>Cómo se desarrolla una inspección de principio a fin y qué revisa la autoridad en cada etapa.</p>
+        <span class="vid-open">Ver en YouTube ↗</span>
+      </div>
+    </a>
+
+    <!-- NOM-019 CMSH -->
+    <a class="vid-card reveal d1" href="https://www.youtube.com/watch?v=IpqIiOnuoyc" target="_blank" rel="noopener noreferrer" data-yt="IpqIiOnuoyc" onclick="trackVideoClick('IpqIiOnuoyc')">
+      <div class="vid-thumb">
+        <img loading="lazy" src="https://i.ytimg.com/vi/IpqIiOnuoyc/hqdefault.jpg" alt="Formación de la Comisión de Seguridad e Higiene NOM-019"/>
+        <div class="vid-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg></div>
+      </div>
+      <div class="vid-meta">
+        <span class="vid-tag">NOM-019</span>
+        <h4>Formación de la Comisión de Seguridad e Higiene</h4>
+        <p>Cómo constituir, integrar y operar la CMSH conforme a la NOM-019-STPS-2011, paso a paso.</p>
+        <span class="vid-open">Ver en YouTube ↗</span>
+      </div>
+    </a>
+
+    <!-- NOM-037 Teletrabajo -->
+    <a class="vid-card reveal d2" href="https://www.youtube.com/watch?v=F5_jXWtIopk" target="_blank" rel="noopener noreferrer" data-yt="F5_jXWtIopk" onclick="trackVideoClick('F5_jXWtIopk')">
+      <div class="vid-thumb">
+        <img loading="lazy" src="https://i.ytimg.com/vi/F5_jXWtIopk/hqdefault.jpg" alt="NOM-037 Home Office y Teletrabajo"/>
+        <div class="vid-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg></div>
+      </div>
+      <div class="vid-meta">
+        <span class="vid-tag">NOM-037</span>
+        <h4>Entra en vigor la NOM-037 · Home Office / Teletrabajo</h4>
+        <p>Nuevas obligaciones del patrón en modalidad de teletrabajo y cómo cumplirlas sin sanciones.</p>
+        <span class="vid-open">Ver en YouTube ↗</span>
+      </div>
+    </a>
+
+    <!-- Electricidad estática -->
+    <a class="vid-card reveal d3" href="https://www.youtube.com/watch?v=LedyVWmeRvE" target="_blank" rel="noopener noreferrer" data-yt="LedyVWmeRvE" onclick="trackVideoClick('LedyVWmeRvE')">
+      <div class="vid-thumb">
+        <img loading="lazy" src="https://i.ytimg.com/vi/LedyVWmeRvE/hqdefault.jpg" alt="Electricidad estática en los centros de trabajo"/>
+        <div class="vid-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg></div>
+      </div>
+      <div class="vid-meta">
+        <span class="vid-tag">NOM-022</span>
+        <h4>Electricidad estática en los centros de trabajo</h4>
+        <p>Riesgos de la electricidad estática y las medidas de control que exige la autoridad.</p>
+        <span class="vid-open">Ver en YouTube ↗</span>
+      </div>
+    </a>
+  </div>
+</div>
+</section>
+
+<section class="cta-band act" data-view="inicio">
+<svg class="cta-traces" viewBox="0 0 1200 440" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M-20 120 H180 Q210 120 210 150 V240 Q210 270 240 270 H540"/>
+  <path d="M1220 90 H980 Q950 90 950 120 V210 Q950 240 920 240 H620"/>
+  <path d="M-20 320 H120 Q150 320 150 350 V420"/>
+  <path d="M1220 350 H1000 Q970 350 970 320 V260 Q970 230 940 230 H780"/>
+  <path d="M420 -20 V70 Q420 100 450 100 H700 Q730 100 730 130 V300"/>
+  <circle cx="540" cy="270" r="3"/><circle cx="620" cy="240" r="3"/><circle cx="150" cy="420" r="3"/><circle cx="730" cy="300" r="3"/>
+</svg>
+<div class="wrap-narrow">
+<div class="eyebrow-serif reveal">¿Listos para automatizar?</div>
+<h2 class="h2 reveal d1">Automatiza el cumplimiento<br>de tu empresa, <em>desde hoy.</em></h2>
+<p class="lede lede-center reveal d2" style="margin-top:22px">Agenda una evaluación con nuestro equipo o habla directamente con un especialista en cumplimiento empresarial. Cada caso se revisa de forma personalizada — sin estimados automáticos.</p>
+<div class="cta-actions reveal d3">
+<a href="#contacto" class="btn btn-blue" onclick="trackEvent('cta_click',{location:'cta_band',label:'contacto'})">Contactar a un especialista <span class="arrow">→</span></a>
+</div>
+</div>
+</section>
+
+<style>
+/* Enlace Colaboradores · discreto, casi transparente, al pie */
+.colab-link{color:var(--muted-2);opacity:.32;font-size:12px;font-weight:500;letter-spacing:.02em;transition:opacity .25s,color .25s}
+.colab-link:hover{opacity:.9;color:var(--muted)}
+</style>
+
+<footer>
+<div class="wrap">
+<div class="foot">
+<div class="foot-brand">
+<a href="#" class="logo"><img src="logo.webp" alt="CAESI" class="logo-img"/></a>
+<p>Centro inteligente de cumplimiento empresarial. NOMs, auditorías, expedientes STPS y portal cliente, en una sola plataforma mexicana.</p>
+</div>
+<div><h6>Plataforma</h6><ul><li><a href="#solucion">Solución</a></li><li><a href="#servicios">Servicios</a></li><li><a href="#portal">Portal cliente</a></li><li><a href="#aprende">Aprende</a></li></ul></div>
+<div><h6>Empresa</h6><ul><li><a href="#fundador">Nosotros</a></li><li><a href="#como-funciona">Metodología</a></li><li><a href="#multas">Casos de éxito</a></li><li><a href="#">Aviso de privacidad</a></li></ul></div>
+<div><h6>Contacto</h6><ul><li><a href="mailto:contacto@caesi.com">contacto@caesi.com</a></li><li><a href="#">+52 55 0000 0000</a></li><li><a href="#">Ciudad de México, MX</a></li></ul></div>
+</div>
+<div class="foot-bottom"><div>© 2026 CAESI · Centro Inteligente de Cumplimiento Empresarial.</div><div>Diseñado para empresas modernas. · <a href="portal_v2.html" class="colab-link" onclick="trackEvent('colaborador_click',{location:'footer'})">Colaboradores</a></div></div>
+</div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+  // Cierra el menú hamburguesa automáticamente al hacer scroll
+  if(menuOpen) closeMenu();
+});
+
+// ─── Menú hamburguesa ──────────────────────────────────────────
+let menuOpen = false;
+function toggleMenu(){
+  menuOpen ? closeMenu() : openMenu();
+}
+function openMenu(){
+  const btn = document.getElementById('menuToggle');
+  const panel = document.getElementById('menuPanel');
+  if(btn) { btn.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+  if(panel){ panel.classList.add('open'); panel.setAttribute('aria-hidden','false'); }
+  menuOpen = true;
+}
+function closeMenu(){
+  const btn = document.getElementById('menuToggle');
+  const panel = document.getElementById('menuPanel');
+  if(btn){ btn.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+  if(panel){ panel.classList.remove('open'); panel.setAttribute('aria-hidden','true'); }
+  menuOpen = false;
+}
+// Cerrar al hacer click fuera del menú
+document.addEventListener('click', (e)=>{
+  if(!menuOpen) return;
+  const panel = document.getElementById('menuPanel');
+  const btn = document.getElementById('menuToggle');
+  if(panel && !panel.contains(e.target) && btn && !btn.contains(e.target)) closeMenu();
+});
+// Cerrar con tecla Escape
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && menuOpen) closeMenu(); });
+
+// ─── Tracking de clicks en videos ────────────────────────────────
+// Los videos abren YouTube en pestaña nueva (link nativo <a target="_blank">);
+// aquí solo registramos el evento para analytics.
+function trackVideoClick(id){
+  if(window.trackEvent) trackEvent('video_click', {video_id:id, destination:'youtube'});
+}
+
+// ─── Video de introducción (click-to-play) ───────────────────────
+function playIntro(el){
+  var id = el && el.getAttribute('data-yt');
+  if(!id) return;
+  el.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0" title="Video de introducción" allow="autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+  el.style.cursor='default';
+  if(window.trackVideoClick) trackVideoClick(id);
+}
+document.addEventListener('keydown',function(e){
+  if((e.key==='Enter'||e.key===' ') && document.activeElement && document.activeElement.classList.contains('introvid')){
+    e.preventDefault(); playIntro(document.activeElement);
+  }
+});
+
+// ─── Feed de noticias en tiempo real ─────────────────────────────
+const NEWS_QUERY = 'NOM STPS OR cumplimiento laboral OR DOF NOM-035 OR NOM-037 site:gob.mx OR STPS inspeccion';
+const NEWS_RSS  = 'https://news.google.com/rss/search?q=' + encodeURIComponent(NEWS_QUERY) + '&hl=es-419&gl=MX&ceid=MX:es-419';
+const NEWS_API  = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(NEWS_RSS) + '&count=6';
+
+const NEWS_FALLBACK = [
+  {title:'NOM-035-STPS-2018 - Factores de riesgo psicosocial', source:'STPS', pubDate:'2024-01-15', link:'https://www.gob.mx/stps', description:'Identificación, análisis y prevención de factores de riesgo psicosocial en el trabajo.'},
+  {title:'NOM-037-STPS-2023 - Teletrabajo y home office', source:'DOF', pubDate:'2023-06-08', link:'https://dof.gob.mx', description:'Obligaciones del patrón en modalidad de teletrabajo. Vigente desde diciembre 2023.'},
+  {title:'NOM-019-STPS-2011 - Comisiones de Seguridad e Higiene', source:'STPS', pubDate:'2024-03-20', link:'https://www.gob.mx/stps', description:'Constitución, integración y funcionamiento de la CMSH en centros de trabajo.'},
+  {title:'NOM-002-STPS-2010 - Prevención y protección contra incendios', source:'STPS', pubDate:'2024-02-10', link:'https://www.gob.mx/stps', description:'Condiciones de seguridad para la prevención y protección contra incendios.'},
+  {title:'Reformas a la Ley Federal del Trabajo 2024', source:'Gob.mx', pubDate:'2024-05-01', link:'https://www.dof.gob.mx', description:'Actualizaciones que impactan obligaciones patronales en seguridad y salud.'},
+  {title:'NOM-030-STPS-2009 - Servicios preventivos', source:'STPS', pubDate:'2024-01-08', link:'https://www.gob.mx/stps', description:'Funciones de los servicios preventivos de seguridad y salud en el trabajo.'},
+];
+
+function fmtDate(d){
+  try {
+    const dt = new Date(d);
+    if(isNaN(dt)) return '';
+    const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    return dt.getDate()+' '+meses[dt.getMonth()]+' '+dt.getFullYear();
+  } catch(e){ return ''; }
+}
+function getSource(item){
+  if(item.source && item.source.title) return item.source.title;
+  if(item.author && item.author.length) return item.author;
+  if(item.title && item.title.includes(' - ')){
+    const parts = item.title.split(' - ');
+    return parts[parts.length-1].trim();
+  }
+  return 'Fuente externa';
+}
+function cleanTitle(title){
+  if(title && title.includes(' - ')){
+    const parts = title.split(' - ');
+    parts.pop();
+    return parts.join(' - ');
+  }
+  return title;
+}
+function stripHTML(s){ if(!s) return ''; return s.replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim(); }
+function renderNews(items, isLive){
+  const grid = document.getElementById('newsGrid');
+  const status = document.getElementById('newsStatus');
+  if(!grid) return;
+  if(!items || items.length===0){
+    if(status){ status.classList.add('err'); const t=status.querySelector('.ns-txt'); if(t) t.textContent = 'Sin noticias disponibles'; }
+    return;
+  }
+  grid.innerHTML = items.slice(0,6).map(function(it){
+    const title = cleanTitle(it.title || 'Sin título');
+    const src   = getSource(it);
+    const date  = fmtDate(it.pubDate);
+    const desc  = stripHTML(it.description || it.contentSnippet || '').slice(0,180);
+    const link  = it.link || '#';
+    return '<a class="news-card" href="'+link+'" target="_blank" rel="noopener noreferrer" onclick="if(window.trackEvent)trackEvent(\'news_click\',{source:\''+src.replace(/'/g,"\\'")+'\'})">' +
+      '<div class="nc-meta"><span class="nc-source">'+src+'</span>' +
+      (date ? '<span class="nc-date">'+date+'</span>' : '') +
+      '</div>' +
+      '<div class="nc-title">'+title+'</div>' +
+      (desc ? '<div class="nc-desc">'+desc+'</div>' : '') +
+      '<span class="nc-cta">Leer noticia ↗</span></a>';
+  }).join('');
+  if(status){
+    status.classList.add('live');
+    const t = status.querySelector('.ns-txt');
+    if(t) t.textContent = isLive ? 'En vivo · actualizado al cargar' : 'Modo respaldo · noticias base';
+  }
+}
+function loadNews(){
+  fetch(NEWS_API, {method:'GET'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(data){
+      if(data.status !== 'ok' || !data.items || data.items.length===0) throw new Error('Sin items');
+      renderNews(data.items, true);
+    })
+    .catch(function(err){
+      console.warn('[CAESI news] feed en vivo fallo, usando respaldo:', err.message);
+      renderNews(NEWS_FALLBACK, false);
+    });
+}
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', loadNews);
+} else { loadNews(); }
+
+// ─── Router de pestañas ──────────────────────────────────────────
+// Cada vista agrupa secciones; los enlaces #ancla siguen funcionando:
+// se abre la pestaña correcta y se hace scroll a la sección.
+const VIEWS = ['inicio','servicios','multas','plataforma','recursos'];
+const ANCHOR_VIEW = {
+  hero:'inicio', solucion:'inicio', fundador:'inicio', contacto:'inicio',
+  ai:'servicios',
+  'como-funciona':'plataforma', portal:'plataforma',
+  noticias:'recursos', aprende:'recursos'
+};
+function showView(v, anchor){
+  document.querySelectorAll('[data-view]').forEach(function(s){ s.classList.toggle('act', s.dataset.view === v); });
+  document.querySelectorAll('.tab-link').forEach(function(t){ t.classList.toggle('act', t.dataset.tab === v); });
+  if(anchor){
+    var el = document.getElementById(anchor);
+    if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth', block:'start'}); }, 90);
+  } else {
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  if(window.trackEvent) trackEvent('view_change', {view: v});
+}
+function route(){
+  var h = (location.hash || '').replace('#','');
+  if(VIEWS.indexOf(h) >= 0) return showView(h);
+  if(ANCHOR_VIEW[h]) return showView(ANCHOR_VIEW[h], h);
+  showView('inicio');
+}
+window.addEventListener('hashchange', route);
+document.querySelectorAll('.tab-link').forEach(function(t){
+  t.addEventListener('click', function(){ setTimeout(route, 0); });
+});
+route();
+
+// ─── Videos que se reproducen solos (mute) ───────────────────────
+(function(){
+  function ytFrame(id,opts){
+    opts=opts||{};
+    var f=document.createElement('iframe');
+    var ctrl=opts.controls?1:0;
+    f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&loop=1&playlist='+id+'&controls='+ctrl+'&rel=0&playsinline=1&modestbranding=1';
+    f.title='Video CAESI';
+    f.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; web-share');
+    f.setAttribute('allowfullscreen','');
+    f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1';
+    if(opts.noclick) f.style.pointerEvents='none';
+    return f;
+  }
+  function hidePosters(el,hide){
+    el.querySelectorAll('.introvid-poster,.introvid-play,.vembed-poster').forEach(function(n){ n.style.opacity = hide?'0':''; });
+  }
+  if('IntersectionObserver' in window){
+    var io2=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var el=e.target, id=el.getAttribute('data-yt'); if(!id) return;
+        if(e.isIntersecting){
+          if(!el.querySelector('iframe')){ hidePosters(el,true); el.appendChild(ytFrame(id,{controls:1})); }
+        } else {
+          var f=el.querySelector('iframe'); if(f) f.remove(); hidePosters(el,false);
+        }
+      });
+    },{threshold:.35});
+    document.querySelectorAll('.yt-auto').forEach(function(el){ io2.observe(el); });
+  }
+  // Hover-preview en la rejilla de videos (mute, sin bloquear el click al link)
+  document.querySelectorAll('.vid-card').forEach(function(card){
+    var thumb=card.querySelector('.vid-thumb'), id=card.getAttribute('data-yt'), t;
+    if(!thumb||!id) return;
+    card.addEventListener('mouseenter',function(){ t=setTimeout(function(){ if(!thumb.querySelector('iframe')) thumb.appendChild(ytFrame(id,{noclick:true})); },250); });
+    card.addEventListener('mouseleave',function(){ clearTimeout(t); var f=thumb.querySelector('iframe'); if(f) f.remove(); });
+  });
+})();
+
+
+// ─── Animación de red radial en el hero (estilo Cantor8) ─────────
+(function(){
+  var c=document.getElementById('netCanvas'); if(!c) return;
+  var ctx=c.getContext('2d'), DPR=Math.min(window.devicePixelRatio||1,2);
+  var W=0,H=0,cx,cy,R,N=130, seeds=[];
+  for(var i=0;i<N;i++){ seeds.push({a:Math.random()*Math.PI*2, r:0.55+Math.random()*0.45, w:0.3+Math.random()*0.9, ph:Math.random()*Math.PI*2}); }
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function resize(){
+    var host=c.parentElement; if(!host) return;
+    W=host.clientWidth; H=host.clientHeight||520;
+    c.width=W*DPR; c.height=H*DPR; c.style.width=W+'px'; c.style.height=H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    cx=W*(W<760?0.5:0.7); cy=H*0.5; R=Math.min(W,H)*(W<760?0.42:0.36);
+  }
+  function frame(t){
+    if(!W) resize();
+    ctx.clearRect(0,0,W,H);
+    var rot=reduce?0:t*0.00004;
+    for(var i=0;i<N;i++){
+      var sd=seeds[i], a=sd.a+rot, rr=R*sd.r*(0.92+0.08*Math.sin((reduce?0:t*0.0011)+sd.ph));
+      var ex=cx+Math.cos(a)*rr, ey=cy+Math.sin(a)*rr;
+      var mx=cx+Math.cos(a+0.14)*rr*0.5, my=cy+Math.sin(a+0.14)*rr*0.5;
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.quadraticCurveTo(mx,my,ex,ey);
+      ctx.strokeStyle='rgba(255,255,255,'+(0.05+0.10*sd.w)+')'; ctx.lineWidth=0.7; ctx.stroke();
+    }
+    var dots=92;
+    for(var j=0;j<dots;j++){
+      var a2=(j/dots)*Math.PI*2+rot*1.4, x=cx+Math.cos(a2)*R, y=cy+Math.sin(a2)*R;
+      ctx.beginPath(); ctx.arc(x,y,1.1,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,.5)'; ctx.fill();
+    }
+    ctx.beginPath(); ctx.arc(cx,cy,2.4,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,.92)'; ctx.fill();
+    if(!reduce) requestAnimationFrame(frame);
+  }
+  window.addEventListener('resize',resize);
+  resize(); requestAnimationFrame(frame); if(reduce) frame(0);
+})();
+
+
+// ─── Transición de página: MOSAICO de cuadros + circuitos ────────
+(function(){
+  var pt=document.getElementById('pt'), grid=document.getElementById('ptGrid'), cir=document.getElementById('circuits');
+  var cells=[], DUR=340, SPREAD=300;
+  function build(){
+    if(!grid) return;
+    var vw=window.innerWidth, vh=window.innerHeight;
+    var cols=Math.max(6,Math.round(vw/96)), rows=Math.max(4,Math.round(vh/96));
+    grid.style.gridTemplateColumns='repeat('+cols+',1fr)';
+    grid.style.gridTemplateRows='repeat('+rows+',1fr)';
+    grid.innerHTML=''; cells=[];
+    for(var i=0;i<cols*rows;i++){
+      var d=document.createElement('div'); d.className='cell';
+      var r=Math.random(); if(r>0.93) d.classList.add('cyan'); else if(r>0.87) d.classList.add('white');
+      grid.appendChild(d); cells.push(d);
+    }
+  }
+  function stagger(cb){
+    var max=0;
+    cells.forEach(function(c){ var dl=Math.random()*SPREAD; c.style.transitionDelay=dl+'ms'; if(dl>max)max=dl; });
+    setTimeout(cb||function(){}, max+DUR+20);
+  }
+  function coverIn(cb){
+    if(!pt){ cb&&cb(); return; }
+    pt.classList.add('on');
+    requestAnimationFrame(function(){
+      stagger(function(){ pt.classList.add('covered'); cb&&cb(); });
+      cells.forEach(function(c){ c.classList.add('f'); });
+    });
+  }
+  function revealOut(cb){
+    if(!pt){ cb&&cb(); return; }
+    pt.classList.remove('covered');
+    stagger(function(){ pt.classList.remove('on'); cb&&cb(); });
+    cells.forEach(function(c){ c.classList.remove('f'); });
+  }
+  build(); window.addEventListener('resize',build);
+  if(pt){
+    // Entrada: aparece cubierto y se revela en mosaico
+    pt.classList.add('on');
+    cells.forEach(function(c){ c.style.transitionDelay='0ms'; c.classList.add('f'); });
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ revealOut(); }); });
+    // Salida al navegar a otra página .html
+    document.addEventListener('click',function(e){
+      var a=e.target.closest?e.target.closest('a'):null; if(!a) return;
+      var href=a.getAttribute('href')||''; if(a.target==='_blank') return;
+      if(!/\.html?($|[?#])/i.test(href)) return;
+      e.preventDefault(); coverIn(function(){ location.href=href; });
+    });
+    // Flash al cambiar de vista/pestaña (#ancla)
+    var busy=false;
+    window.addEventListener('hashchange',function(){ if(busy) return; busy=true; coverIn(function(){ setTimeout(function(){ revealOut(function(){ busy=false; }); },60); }); });
+  }
+  if(cir){
+    var ticking=false;
+    window.addEventListener('scroll',function(){ if(ticking) return; ticking=true; requestAnimationFrame(function(){ cir.style.transform='translateY('+(window.scrollY*0.05)+'px)'; ticking=false; }); },{passive:true});
+  }
+})();
+</script>
+
+<!-- ═══ Formulario de contacto → Solicitud en el CRM (Supabase) ═══ -->
+<script>
+(function(){
+  var SB_URL='https://vbihkgnydgoqocdnygzf.supabase.co';
+  var SB_KEY='sb_publishable_sAVPh0l7aO4QGbGBRMAlvg_aTbEFdTt';
+  window.enviarLead=function(ev){
+    if(ev&&ev.preventDefault) ev.preventDefault();
+    var g=function(id){ var el=document.getElementById(id); return el?el.value.trim():''; };
+    var nombre=g('lf_nombre'), tel=g('lf_tel');
+    var out=document.getElementById('lf_ok'), btn=document.getElementById('lf_btn');
+    var show=function(txt,ok){ if(!out) return; out.textContent=txt; out.className='lf-ok show '+(ok?'good':'bad'); };
+    if(!nombre){ show('Escribe tu nombre.',false); return false; }
+    if(!tel){ show('Déjanos un WhatsApp o teléfono.',false); return false; }
+    var body={ nombre:nombre, empresa:g('lf_empresa'), telefono:tel, email:g('lf_email'), mensaje:g('lf_msg'), origen:'landing', estado:'nueva' };
+    if(btn){ btn.disabled=true; btn.style.opacity=.6; }
+    fetch(SB_URL+'/rest/v1/crm_solicitud', {
+      method:'POST',
+      headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json', 'Prefer':'return=minimal' },
+      body: JSON.stringify(body)
+    }).then(function(r){
+      if(r.ok){
+        show('¡Gracias, '+nombre+'! Recibimos tu solicitud. Un especialista te contacta pronto.', true);
+        try{ if(window.trackEvent) trackEvent('lead_enviado',{empresa:body.empresa||'—'}); }catch(e){}
+        var f=document.getElementById('leadForm'); if(f) f.reset();
+      } else {
+        show('No se pudo enviar. Escríbenos por WhatsApp o correo, por favor.', false);
+      }
+    }).catch(function(){
+      show('Sin conexión. Escríbenos por WhatsApp o correo, por favor.', false);
+    }).finally(function(){ if(btn){ btn.disabled=false; btn.style.opacity=1; } });
+    return false;
+  };
+})();
+</script>
+</body>
+</html>
+                                                                                     
