@@ -189,7 +189,6 @@ let observer;
 let previousScrollY = Math.max(0, window.scrollY);
 let scrollDistance = 0;
 let filmTravel = 0;
-let filmScale = 1;
 
 function measureFilm() {
   const layout = heroLayout.getBoundingClientRect();
@@ -204,9 +203,8 @@ function measureFilm() {
     return;
   }
 
-  filmScale = width / slot.width;
   hero.style.setProperty("--film-shift", `${layout.left + (layout.width - width) / 2 - slot.left}px`);
-  hero.style.setProperty("--film-growth", filmScale - 1);
+  hero.style.setProperty("--film-growth", width / slot.width - 1);
   filmTravel = hero.offsetHeight - heroLayout.offsetHeight;
 }
 
@@ -215,7 +213,6 @@ function updateFilm() {
   const progress = clamp(-hero.getBoundingClientRect().top / filmTravel);
   const zoom = progress * progress * (3 - 2 * progress);
   setProgress(hero, "--cover-progress", zoom);
-  setProgress(hero, "--film-control-scale", 1 / (1 + (filmScale - 1) * zoom));
   hero.classList.toggle("film-expanded", zoom > .46);
 }
 
@@ -292,37 +289,46 @@ function scheduleScrollUpdate() {
 
 function setupHeroVideo() {
   const video = document.querySelector("#heroVideo");
-  const toggle = document.querySelector('[aria-controls="heroVideo"]');
-  if (!video || !toggle) return;
+  const toggle = document.querySelector(".hero-video-toggle");
+  const footerActions = document.querySelector(".colab-link")?.parentElement;
+  if (!video || !toggle || !footerActions) return;
+
+  // Keep the pause control in the footer so the film itself stays unobstructed.
+  toggle.className = "hero-motion-toggle";
+  toggle.removeAttribute("aria-label");
+  footerActions.classList.add("foot-actions");
+  footerActions.prepend(toggle);
+
+  const source = new URL(video.dataset.src, document.baseURI);
+  source.searchParams.set("v", "3");
 
   const connection = navigator.connection;
   let choice = "auto";
   let inView = !("IntersectionObserver" in window);
 
+  function playbackEnabled() {
+    return choice === "play" || (choice === "auto" && !reducedMotion.matches && !connection?.saveData);
+  }
+
   function syncPlayback() {
-    const autoplay = choice === "auto" && !reducedMotion.matches && !connection?.saveData;
-    if (!inView || document.hidden || (!autoplay && choice !== "play")) {
+    const enabled = playbackEnabled();
+    const label = enabled ? "Pausar video de portada" : "Activar video de portada";
+    if (toggle.textContent !== label) toggle.textContent = label;
+    if (!inView || document.hidden || !enabled) {
       video.pause();
       return;
     }
-    if (!video.hasAttribute("src")) video.src = video.dataset.src;
+    if (!video.hasAttribute("src")) video.src = source.href;
     if (video.paused) video.play().catch(() => {});
   }
 
-  function updateToggle() {
-    toggle.classList.toggle("is-playing", !video.paused);
-    toggle.setAttribute("aria-label", video.paused ? "Reproducir video de portada" : "Pausar video de portada");
-  }
-
   video.addEventListener("playing", () => video.classList.add("has-frame"));
-  video.addEventListener("play", updateToggle);
-  video.addEventListener("pause", updateToggle);
   video.addEventListener("error", () => {
     video.classList.remove("has-frame");
     toggle.hidden = true;
   });
   toggle.addEventListener("click", () => {
-    choice = video.paused ? "play" : "pause";
+    choice = playbackEnabled() ? "pause" : "play";
     syncPlayback();
   });
   document.addEventListener("visibilitychange", syncPlayback);
@@ -336,9 +342,8 @@ function setupHeroVideo() {
       syncPlayback();
     }, { threshold: .15 });
     visibility.observe(video.closest(".hero-film"));
-  } else {
-    syncPlayback();
   }
+  syncPlayback();
 }
 
 function setMotion() {
