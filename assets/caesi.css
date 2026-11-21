@@ -205,32 +205,13 @@ main:focus { outline: none; }
 .hero-image, .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .hero-video { opacity: 0; transition: opacity .23s ease; }
 .hero-video.has-frame { opacity: 1; }
+.hero-film .hero-video-toggle { display: none; }
 .hero-kicker { color: var(--teal); }
 .display { margin-block: 1.05rem 1.15rem; font-size: clamp(2.8rem, 5.48vw, 6rem); font-weight: 720; line-height: .975; letter-spacing: -.061em; word-spacing: .12em; text-wrap: wrap; }
 .display em { color: var(--teal); }
 .hero-sub { max-width: 32ch; color: var(--muted); font-size: clamp(1rem, 1.4vw, 1.19rem); line-height: 1.52; }
 .hero-actions { margin-top: clamp(1.25rem, 2.3vw, 1.9rem); }
 .hero-actions .btn { min-height: 3.55rem; padding-inline: 1.5rem; font-size: 1rem; }
-.hero-video-toggle {
-  position: absolute;
-  right: clamp(.6rem, 1.05vw, 1rem);
-  bottom: clamp(.6rem, 1.05vw, 1rem);
-  display: inline-grid;
-  place-items: center;
-  width: 2.9rem;
-  height: 2.9rem;
-  padding: 0;
-  border: 1px solid #fff;
-  border-radius: 50%;
-  background: #fffffff0;
-  color: var(--ink);
-  box-shadow: 0 3px 16px #1114;
-  transform-origin: right bottom;
-}
-.hero-video-toggle:hover { color: #fff; background: var(--teal); }
-.hero-video-toggle:focus-visible { outline-color: #fff; }
-.hero-video-toggle span { margin-left: 2px; border-block: .41rem solid transparent; border-left: .61rem solid currentColor; }
-.hero-video-toggle.is-playing span { width: .62rem; height: .78rem; margin: 0; border: 0; border-inline: 3px solid currentColor; }
 .hero-trust { grid-area: trust; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 29rem; border-top: 1px solid #1d3a3233; }
 .ht-item { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: .37rem; padding: 1.1rem .45rem 0 0; }
 .ht-item + .ht-item { padding-inline-start: clamp(.75rem, 1.9vw, 1.8rem); border-inline-start: 1px solid #1d3a3233; }
@@ -560,8 +541,12 @@ main:focus { outline: none; }
 .foot ul { list-style: none; padding: 0; color: #d1e1ee; font-size: .9375rem; }
 .foot li + li { margin-top: .35rem; }
 .site-footer a:hover { color: var(--mint); }
-.foot-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem; margin-top: 2.2rem; padding-block: 1.2rem; border-top: 1px solid #ffffff40; color: #d1e1ee; font-size: .875rem; }
-.colab-link { text-decoration: underline; text-underline-offset: .18em; }
+.foot-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; margin-top: 2.2rem; padding-block: 1.2rem; border-top: 1px solid #ffffff40; color: #d1e1ee; font-size: .875rem; }
+.foot-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem 1.2rem; }
+.colab-link, .hero-motion-toggle { padding: .55rem 0; text-decoration: underline; text-underline-offset: .18em; }
+.hero-motion-toggle { color: inherit; border: 0; background: none; }
+.hero-motion-toggle:hover { color: var(--mint); }
+.hero-motion-toggle:focus-visible { outline-color: var(--mint); }
 
 @media (min-width: 1080px) and (min-height: 720px) {
   .hero-stage {
@@ -575,7 +560,6 @@ main:focus { outline: none; }
       scale(calc(1 + var(--film-growth, 0) * var(--cover-progress, 0)));
     will-change: transform;
   }
-  .motion-ready .is-expanding .hero-video-toggle { transform: scale(var(--film-control-scale, 1)); }
   .motion-ready .is-expanding .hero-copy, .motion-ready .is-expanding .hero-trust {
     opacity: max(0, calc(1 - 2.2 * var(--cover-progress, 0)));
     transform: translate3d(0, calc(-1.3rem * var(--cover-progress, 0)), 0);
@@ -687,7 +671,6 @@ main:focus { outline: none; }
   .display { font-size: clamp(2.6rem, 12.9vw, 5.25rem); }
   .hero-sub { max-width: 35ch; }
   .hero-actions .btn { min-height: 3.2rem; padding-inline: 1.2rem; font-size: .95rem; }
-  .hero-video-toggle { width: 2.75rem; height: 2.75rem; }
   .solution-list { grid-template-columns: 1fr; }
   .solution-card { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 1rem; align-items: center; min-height: 6.3rem; padding-right: 3rem; }
   .solution-card::after { top: calc(50% - .42rem); right: 1.3rem; width: .7rem; height: .7rem; }
