@@ -67,10 +67,14 @@
 <main id="contenido" tabindex="-1">
 <section id="hero" data-view="inicio" class="act">
   <div class="hero-stage">
-    <picture class="hero-image" aria-hidden="true">
-      <source media="(max-width: 680px)" srcset="assets/auditoria-movil.webp" width="739" height="941">
-      <img src="assets/auditoria.webp" width="1672" height="941" alt="" fetchpriority="high">
-    </picture>
+    <div class="hero-media" aria-hidden="true">
+      <picture class="hero-image">
+        <source media="(max-width: 680px)" srcset="assets/auditoria-movil.webp" width="739" height="941">
+        <img src="assets/auditoria.webp" width="1672" height="941" alt="" fetchpriority="high">
+      </picture>
+      <!-- Mikael Blomkvist, Pexels 8964375. Recorte para la portada. -->
+      <video id="heroVideo" class="hero-video" data-src="assets/auditoria-portada.mp4" muted loop playsinline preload="none" disablepictureinpicture></video>
+    </div>
     <div class="wrap hero-copy">
       <p class="eyebrow hero-kicker reveal">Cumplimiento empresarial en México</p>
       <h1 class="display" data-letter-reveal>Tu empresa lista<br>para auditoría,<br><em>siempre.</em></h1>
@@ -85,7 +89,10 @@
         <div class="hero-specialties" aria-label="Áreas de especialidad">
           <span>STPS</span><span>Protección Civil</span><span>Medio Ambiente</span>
         </div>
-        <a href="#cumplimiento" class="scroll-link">Conoce CAESI <span aria-hidden="true"></span></a>
+        <div class="hero-controls">
+          <a href="#cumplimiento" class="scroll-link">Conoce CAESI <span aria-hidden="true"></span></a>
+          <button type="button" class="hero-video-toggle" aria-label="Reproducir video de portada" aria-controls="heroVideo" hidden><span aria-hidden="true"></span></button>
+        </div>
       </div>
     </div>
   </div>

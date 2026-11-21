@@ -1,6 +1,7 @@
 "use strict";
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const siteHeader = document.querySelector(".site-header");
 const menuButton = document.querySelector("#menuToggle");
 const menuPanel = document.querySelector("#menuPanel");
 const sections = Array.from(document.querySelectorAll("[data-view]"));
@@ -16,6 +17,7 @@ function setMenu(open) {
 }
 
 menuButton.addEventListener("click", () => setMenu(menuPanel.hidden));
+siteHeader.addEventListener("focusin", () => siteHeader.classList.remove("is-offscreen"));
 document.addEventListener("click", event => {
   if (!menuPanel.hidden && !menuPanel.contains(event.target) && !menuButton.contains(event.target)) setMenu(false);
 });
@@ -159,17 +161,38 @@ const journeyFeatures = journey.querySelector(".journey-features");
 const clamp = value => Math.max(0, Math.min(value, 1));
 let scrollFrame = 0;
 let observer;
+let previousScrollY = Math.max(0, window.scrollY);
+let scrollDistance = 0;
+
+function updateHeader(scrollY) {
+  const change = scrollY - previousScrollY;
+  previousScrollY = scrollY;
+
+  if (scrollY <= 4 || !menuPanel.hidden || siteHeader.querySelector(":focus-visible")) {
+    siteHeader.classList.remove("is-offscreen");
+    scrollDistance = 0;
+    return;
+  }
+  if (!change) return;
+  if (Math.sign(change) !== Math.sign(scrollDistance)) scrollDistance = 0;
+  scrollDistance += change;
+
+  if (scrollY > 24 && scrollDistance > 12) siteHeader.classList.add("is-offscreen");
+  if (scrollDistance < -12) siteHeader.classList.remove("is-offscreen");
+}
 
 function updateOnScroll() {
   scrollFrame = 0;
+  const scrollY = Math.max(0, window.scrollY);
+  updateHeader(scrollY);
   if (!root.classList.contains("motion-ready")) return;
 
   const viewport = window.innerHeight;
-  root.style.setProperty("--page-progress", clamp(window.scrollY / Math.max(1, root.scrollHeight - viewport)));
+  root.style.setProperty("--page-progress", clamp(scrollY / Math.max(1, root.scrollHeight - viewport)));
 
   const heroRect = hero.getBoundingClientRect();
   if (heroRect.height && heroRect.bottom > 0) {
-    const offset = Math.max(0, window.scrollY) * .18;
+    const offset = scrollY * .18;
     hero.style.setProperty("--photo-shift", `${Math.min(offset, 78).toFixed(1)}px`);
   }
 
@@ -190,7 +213,58 @@ function updateOnScroll() {
 }
 
 function scheduleScrollUpdate() {
-  if (!scrollFrame && root.classList.contains("motion-ready")) scrollFrame = requestAnimationFrame(updateOnScroll);
+  if (!scrollFrame) scrollFrame = requestAnimationFrame(updateOnScroll);
+}
+
+function setupHeroVideo() {
+  const video = document.querySelector("#heroVideo");
+  const toggle = document.querySelector('[aria-controls="heroVideo"]');
+  if (!video || !toggle) return;
+
+  const connection = navigator.connection;
+  let choice = "auto";
+  let inView = !("IntersectionObserver" in window);
+
+  function syncPlayback() {
+    const autoplay = choice === "auto" && !reducedMotion.matches && !connection?.saveData;
+    if (!inView || document.hidden || (!autoplay && choice !== "play")) {
+      video.pause();
+      return;
+    }
+    if (!video.hasAttribute("src")) video.src = video.dataset.src;
+    if (video.paused) video.play().catch(() => {});
+  }
+
+  function updateToggle() {
+    toggle.classList.toggle("is-playing", !video.paused);
+    toggle.setAttribute("aria-label", video.paused ? "Reproducir video de portada" : "Pausar video de portada");
+  }
+
+  video.addEventListener("playing", () => video.classList.add("has-frame"));
+  video.addEventListener("play", updateToggle);
+  video.addEventListener("pause", updateToggle);
+  video.addEventListener("error", () => {
+    video.classList.remove("has-frame");
+    toggle.hidden = true;
+  });
+  toggle.addEventListener("click", () => {
+    choice = video.paused ? "play" : "pause";
+    syncPlayback();
+  });
+  document.addEventListener("visibilitychange", syncPlayback);
+  reducedMotion.addEventListener("change", syncPlayback);
+  connection?.addEventListener?.("change", syncPlayback);
+  toggle.hidden = false;
+
+  if ("IntersectionObserver" in window) {
+    const visibility = new IntersectionObserver(([entry]) => {
+      inView = entry.intersectionRatio >= .15;
+      syncPlayback();
+    }, { threshold: .15 });
+    visibility.observe(hero);
+  } else {
+    syncPlayback();
+  }
 }
 
 function setMotion() {
@@ -221,3 +295,4 @@ window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
 window.addEventListener("resize", scheduleScrollUpdate, { passive: true });
 showRoute(location.hash);
 setMotion();
+setupHeroVideo();
