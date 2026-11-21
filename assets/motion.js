@@ -131,7 +131,7 @@ function prepareHeading(heading) {
     if (lineIndex) heading.append(" ");
     text.className = letterReveal ? "motion-letter-line" : "motion-line";
     if (letterReveal) letterIndex = staggerLetters(text, letterIndex);
-    else text.style.setProperty("--line-delay", `${lineIndex * 95}ms`);
+    else text.style.setProperty("--line-index", lineIndex);
     mask.append(text);
     heading.append(mask);
   });
@@ -157,12 +157,34 @@ const hero = document.querySelector(".hero-stage");
 const journey = document.querySelector("[data-journey]");
 const journeyWords = Array.from(journey.querySelectorAll("[data-journey-word]"));
 const journeyCards = Array.from(journey.querySelectorAll("[data-journey-card]"));
+const journeyMarkers = journeyCards.map(card => {
+  const marker = document.createElement("span");
+  marker.className = "journey-marker";
+  marker.setAttribute("aria-hidden", "true");
+  card.before(marker);
+  return marker;
+});
 const journeyFeatures = journey.querySelector(".journey-features");
+for (const frame of document.querySelectorAll(".intro-media, .founder-photo")) {
+  frame.classList.remove("reveal", "d2");
+  frame.dataset.scrollFrame = "";
+}
+const scrollReveals = Array.from(document.querySelectorAll("[data-line-reveal], [data-scroll-frame]"));
 const clamp = value => Math.max(0, Math.min(value, 1));
 let scrollFrame = 0;
 let observer;
 let previousScrollY = Math.max(0, window.scrollY);
 let scrollDistance = 0;
+
+function prepareHeroVisual() {
+  const media = hero.querySelector(".hero-media");
+  const visual = document.createElement("div");
+  visual.className = "hero-visual";
+  visual.setAttribute("aria-hidden", "true");
+  media.before(visual);
+  visual.append(media);
+  hero.classList.add("has-visual");
+}
 
 function updateHeader(scrollY) {
   const change = scrollY - previousScrollY;
@@ -188,28 +210,36 @@ function updateOnScroll() {
   if (!root.classList.contains("motion-ready")) return;
 
   const viewport = window.innerHeight;
-  root.style.setProperty("--page-progress", clamp(scrollY / Math.max(1, root.scrollHeight - viewport)));
+  const pageDistance = Math.max(1, root.scrollHeight - viewport);
+  const cover = hero.getBoundingClientRect();
+  const track = journeyFeatures.getBoundingClientRect();
+  const markerTops = track.height ? journeyMarkers.map(marker => marker.getBoundingClientRect().top) : [];
+  const reveals = scrollReveals.map(element => [element, element.getBoundingClientRect()]);
 
-  const heroRect = hero.getBoundingClientRect();
-  if (heroRect.height && heroRect.bottom > 0) {
-    const offset = scrollY * .18;
-    hero.style.setProperty("--photo-shift", `${Math.min(offset, 78).toFixed(1)}px`);
+  setProgress(root, "--page-progress", scrollY / pageDistance);
+  if (cover.height && cover.bottom > 0) {
+    setProgress(hero, "--cover-progress", (scrollY - 24) / (Math.min(cover.height, viewport) * .59));
+  }
+  for (const [element, bounds] of reveals) {
+    if (bounds.height) setProgress(element, "--reveal-progress", (viewport * .93 - bounds.top) / (viewport * .29));
   }
 
-  const track = journeyFeatures.getBoundingClientRect();
   if (!track.height) return;
   const target = viewport * .6;
-  const progress = clamp((target - track.top) / track.height);
-  const visible = journeyCards.map(card => {
-    const bounds = card.getBoundingClientRect();
-    return clamp((target - bounds.top + 30) / Math.min(120, bounds.height * .55));
-  });
-  journey.style.setProperty("--journey-progress", `${(progress * 100).toFixed(1)}%`);
-  const activeCard = visible.findLastIndex(fill => fill > .16);
+  const fills = markerTops.map(top => (target - top + 32) / Math.min(150, viewport * .24));
+  const activeCard = fills.findLastIndex(fill => fill > .22);
+  setProgress(journey, "--journey-progress", (target - track.top) / track.height);
   journeyCards.forEach((card, index) => {
     card.classList.toggle("active", index === activeCard);
-    journeyWords[index].style.setProperty("--word-fill", `${(visible[index] * 100).toFixed(1)}%`);
+    journeyMarkers[index].classList.toggle("active", index === activeCard);
+    setProgress(journeyWords[index], "--word-progress", fills[index]);
+    setProgress(card, "--card-progress", (viewport * .94 - markerTops[index]) / (viewport * .34));
   });
+}
+
+function setProgress(element, property, fraction) {
+  const value = clamp(fraction).toFixed(3);
+  if (element.style.getPropertyValue(property) !== value) element.style.setProperty(property, value);
 }
 
 function scheduleScrollUpdate() {
@@ -283,16 +313,18 @@ function setMotion() {
     });
   }, { threshold: .12, rootMargin: "0px 0px -4% 0px" });
 
-  document.querySelectorAll(".reveal, [data-line-reveal], [data-letter-reveal], [data-counter]").forEach(element => {
+  document.querySelectorAll(".reveal, [data-letter-reveal], [data-counter]").forEach(element => {
     if (!element.classList.contains("in")) observer.observe(element);
   });
   scheduleScrollUpdate();
 }
 
 document.querySelectorAll("[data-line-reveal], [data-letter-reveal]").forEach(prepareHeading);
+prepareHeroVisual();
 reducedMotion.addEventListener("change", setMotion);
 window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
 window.addEventListener("resize", scheduleScrollUpdate, { passive: true });
+document.fonts?.ready.then(scheduleScrollUpdate);
 showRoute(location.hash);
 setMotion();
 setupHeroVideo();
