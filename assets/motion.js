@@ -300,7 +300,7 @@ function setupHeroVideo() {
   footerActions.prepend(toggle);
 
   const source = new URL(video.dataset.src, document.baseURI);
-  source.searchParams.set("v", "3");
+  source.searchParams.set("v", "4");
 
   const connection = navigator.connection;
   let choice = "auto";
