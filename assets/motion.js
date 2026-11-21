@@ -14,6 +14,7 @@ function setMenu(open) {
   menuButton.classList.toggle("open", open);
   menuButton.setAttribute("aria-expanded", String(open));
   menuButton.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+  scheduleScrollUpdate();
 }
 
 menuButton.addEventListener("click", () => setMenu(menuPanel.hidden));
@@ -69,6 +70,7 @@ document.addEventListener("click", event => {
   }
   if (location.hash !== hash) history.pushState(null, "", hash);
   showRoute(hash, true);
+  if (evaluationDock?.contains(link)) contactSection.querySelector("h2").focus({ preventScroll: true });
 });
 window.addEventListener("hashchange", () => showRoute(location.hash));
 document.documentElement.classList.add("view-ready");
@@ -154,6 +156,10 @@ function countUp(element) {
 
 const root = document.documentElement;
 const hero = document.querySelector(".hero-stage");
+const heroActions = hero.querySelector(".hero-actions");
+const contactSection = document.querySelector("#contacto");
+const evaluationDock = document.querySelector(".evaluation-dock");
+const mobileDock = window.matchMedia("(max-width: 820px)");
 const journey = document.querySelector("[data-journey]");
 const journeyWords = Array.from(journey.querySelectorAll("[data-journey-word]"));
 const journeyCards = Array.from(journey.querySelectorAll("[data-journey-card]"));
@@ -206,10 +212,11 @@ function updateHeader(scrollY) {
 function updateOnScroll() {
   scrollFrame = 0;
   const scrollY = Math.max(0, window.scrollY);
+  const viewport = window.innerHeight;
   updateHeader(scrollY);
+  updateEvaluationDock(viewport);
   if (!root.classList.contains("motion-ready")) return;
 
-  const viewport = window.innerHeight;
   const pageDistance = Math.max(1, root.scrollHeight - viewport);
   const cover = hero.getBoundingClientRect();
   const track = journeyFeatures.getBoundingClientRect();
@@ -235,6 +242,19 @@ function updateOnScroll() {
     setProgress(journeyWords[index], "--word-progress", fills[index]);
     setProgress(card, "--card-progress", (viewport * .94 - markerTops[index]) / (viewport * .34));
   });
+}
+
+function updateEvaluationDock(viewport) {
+  if (!evaluationDock) return;
+  if (!mobileDock.matches || !menuPanel.hidden) {
+    evaluationDock.hidden = true;
+    return;
+  }
+  const primary = heroActions.getBoundingClientRect();
+  const contact = contactSection.getBoundingClientRect();
+  const primaryVisible = primary.height > 0 && primary.bottom > 0 && primary.top < viewport;
+  const beforeContact = contact.height === 0 || contact.top >= viewport - 12;
+  evaluationDock.hidden = primaryVisible || !beforeContact;
 }
 
 function setProgress(element, property, fraction) {
@@ -324,6 +344,8 @@ prepareHeroVisual();
 reducedMotion.addEventListener("change", setMotion);
 window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
 window.addEventListener("resize", scheduleScrollUpdate, { passive: true });
+const optionalDetails = document.querySelector(".lf-optional");
+optionalDetails?.addEventListener("invalid", () => { optionalDetails.open = true; }, true);
 document.fonts?.ready.then(scheduleScrollUpdate);
 showRoute(location.hash);
 setMotion();
