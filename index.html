@@ -26,8 +26,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400..800&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/caesi-marca.webp" type="image/webp">
-<link rel="stylesheet" href="assets/caesi.css">
-<script defer src="assets/motion.js"></script>
+<link rel="stylesheet" href="assets/caesi.css?v=portada-2">
+<script defer src="assets/motion.js?v=portada-2"></script>
 </head>
 <body>
 <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -67,36 +67,30 @@
 <main id="contenido" tabindex="-1">
 <section id="hero" data-view="inicio" class="act">
   <div class="hero-stage">
-    <div class="hero-media" aria-hidden="true">
-      <picture class="hero-image">
-        <source media="(max-width: 680px)" srcset="assets/auditoria-movil.webp" width="739" height="941">
-        <img src="assets/auditoria.webp" width="1672" height="941" alt="" fetchpriority="high">
-      </picture>
-      <!-- Mikael Blomkvist, Pexels 8964375. Recorte para la portada. -->
-      <video id="heroVideo" class="hero-video" data-src="assets/auditoria-portada.mp4" muted loop playsinline preload="none" disablepictureinpicture></video>
-    </div>
-    <div class="wrap hero-copy">
-      <p class="eyebrow hero-kicker reveal">Cumplimiento empresarial</p>
-      <h1 class="display" data-letter-reveal>Tu empresa lista<br>para una <em>inspección.</em></h1>
-      <p class="hero-sub reveal d1">Te acompañamos ante la STPS, Protección Civil y Medio Ambiente.</p>
-      <div class="hero-actions reveal d2">
-        <a href="#contacto" class="btn btn-blue" onclick="trackEvent('cta_click',{location:'hero',label:'evaluacion'})">Agenda tu evaluación</a>
+    <div class="wrap hero-layout">
+      <div class="hero-copy">
+        <p class="eyebrow hero-kicker reveal">Cumplimiento empresarial</p>
+        <h1 class="display" data-letter-reveal>Tu empresa<br>lista para una<br><em>inspección.</em></h1>
+        <p class="hero-sub reveal d1">Te acompañamos ante la STPS, Protección Civil y Medio Ambiente.</p>
+        <div class="hero-actions reveal d2">
+          <a href="#contacto" class="btn btn-blue btn-arrow" onclick="trackEvent('cta_click',{location:'hero',label:'evaluacion'})">Agenda tu evaluación</a>
+        </div>
       </div>
-    </div>
-    <div class="hero-bottom">
-      <div class="wrap">
-        <div class="hero-controls">
-          <a href="#cumplimiento" class="scroll-link">Conoce CAESI <span aria-hidden="true"></span></a>
+      <div class="hero-film-slot">
+        <div class="hero-film">
+          <div class="hero-visual" aria-hidden="true">
+            <img class="hero-image" src="assets/auditoria-portada.webp" width="1280" height="720" alt="" fetchpriority="high" decoding="async">
+            <!-- Mikael Blomkvist, Pexels 8964375. Video editado para reproducirse en bucle. -->
+            <video id="heroVideo" class="hero-video" data-src="assets/auditoria-portada.mp4?v=2" muted loop playsinline preload="none" disablepictureinpicture></video>
+          </div>
           <button type="button" class="hero-video-toggle" aria-label="Reproducir video de portada" aria-controls="heroVideo" hidden><span aria-hidden="true"></span></button>
         </div>
       </div>
+      <dl class="hero-trust">
+        <div class="ht-item"><dt>Años de experiencia</dt><dd><span class="sr-only">15+</span><span aria-hidden="true"><span data-counter="15">15</span>+</span></dd></div>
+        <div class="ht-item"><dt>Empresas protegidas</dt><dd><span class="sr-only">500+</span><span aria-hidden="true"><span data-counter="500">500</span>+</span></dd></div>
+      </dl>
     </div>
-  </div>
-  <div class="hero-proof">
-    <dl class="wrap hero-trust">
-      <div class="ht-item"><dt>Años de experiencia</dt><dd><span class="sr-only">15+</span><span aria-hidden="true"><span data-counter="15">15</span>+</span></dd></div>
-      <div class="ht-item"><dt>Empresas protegidas</dt><dd><span class="sr-only">500+</span><span aria-hidden="true"><span data-counter="500">500</span>+</span></dd></div>
-    </dl>
   </div>
 </section>
 
@@ -108,14 +102,17 @@
     </div>
     <div class="journey-features">
       <article class="journey-card" data-journey-card>
+        <span class="journey-mark records" aria-hidden="true"><i></i><i></i><i></i></span>
         <h3 data-line-reveal>Expedientes en orden.</h3>
         <p>Contratos, capacitaciones y evidencias en un solo lugar.</p>
       </article>
       <article class="journey-card" data-journey-card>
+        <span class="journey-mark alerts" aria-hidden="true"><i></i><i></i><i></i></span>
         <h3 data-line-reveal>Alertas a tiempo.</h3>
         <p>Recibe avisos antes de cada vencimiento.</p>
       </article>
       <article class="journey-card" data-journey-card>
+        <span class="journey-mark support" aria-hidden="true"><i></i><i></i><i></i></span>
         <h3 data-line-reveal>Respaldo en campo.</h3>
         <p>Un equipo legal y técnico te acompaña en la inspección.</p>
       </article>
@@ -123,21 +120,36 @@
   </div>
 </section>
 
-<!-- ═══════ Video de introducción (servicios en 1 min) ═══════ -->
-<section id="solucion" class="gradient-band act" data-view="inicio">
-  <div class="wrap solution-grid">
-    <div class="reveal">
-      <h2 class="h2" data-line-reveal>Cumplimiento en<br><em>tres áreas.</em></h2>
-      <a href="#servicios" class="solution-link">Ver servicios</a>
+<section id="solucion" class="service-overview act" data-view="inicio">
+  <div class="wrap">
+    <div class="solution-heading">
+      <h2 class="h2" data-line-reveal>Cumplimiento en <em>tres áreas.</em></h2>
+      <a href="#servicios" class="solution-link btn-arrow">Ver servicios</a>
     </div>
-    <ul class="solution-list reveal d1">
-      <li><strong>STPS</strong><span>NOMs y expedientes</span></li>
-      <li><strong>Protección Civil</strong><span>Programas internos y brigadas</span></li>
-      <li><strong>Medio Ambiente</strong><span>MAU y trámites ecológicos</span></li>
+    <ul class="solution-list">
+      <li class="reveal">
+        <a class="solution-card" href="#servicio-stps">
+          <span class="service-glyph stps" aria-hidden="true"></span>
+          <span class="solution-label"><strong>STPS</strong><span>NOMs y expedientes</span></span>
+        </a>
+      </li>
+      <li class="reveal d1">
+        <a class="solution-card" href="#servicio-proteccion-civil">
+          <span class="service-glyph civil" aria-hidden="true"></span>
+          <span class="solution-label"><strong>Protección Civil</strong><span>Programas internos y brigadas</span></span>
+        </a>
+      </li>
+      <li class="reveal d2">
+        <a class="solution-card" href="#servicio-medio-ambiente">
+          <span class="service-glyph environment" aria-hidden="true"></span>
+          <span class="solution-label"><strong>Medio Ambiente</strong><span>MAU y trámites ecológicos</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
 
+<!-- ═══════ Video de introducción ═══════ -->
 <section id="nosotros" class="intro-section act" data-view="inicio">
   <div class="wrap split">
     <div class="reveal">
@@ -178,10 +190,10 @@
 <div style="position:relative;z-index:2"><a href="#multas" class="btn btn-ghost btn-sm">Quiero impugnar </a></div>
 <div class="srv-vis" aria-hidden="true"></div>
 </div>
-<div class="srv teal reveal d1"><div><div class="srv-tag">STPS</div><h4 style="margin-top:10px">Cumplimiento NOMs</h4><p>NOM-035, 030, 019, 017, 009 (alturas), 006 (montacargas). Implementación y evidencias.</p></div></div>
-<div class="srv gold reveal d2"><div><div class="srv-tag">Ecología</div><h4 style="margin-top:10px">Medio Ambiente &amp; MAU</h4><p>Manifestación Ambiental Única (MAU), estudios ambientales, cédulas de operación y reportes a SEMARNAT.</p></div></div>
+<div class="srv teal reveal d1"><div><div id="servicio-stps" class="srv-tag" data-route-anchor tabindex="-1">STPS</div><h4 style="margin-top:10px">Cumplimiento NOMs</h4><p>NOM-035, 030, 019, 017, 009 (alturas), 006 (montacargas). Implementación y evidencias.</p></div></div>
+<div class="srv gold reveal d2"><div><div id="servicio-medio-ambiente" class="srv-tag" data-route-anchor tabindex="-1">Ecología</div><h4 style="margin-top:10px">Medio Ambiente &amp; MAU</h4><p>Manifestación Ambiental Única (MAU), estudios ambientales, cédulas de operación y reportes a SEMARNAT.</p></div></div>
 <div class="srv reveal"><div><div class="srv-tag">Capacitación</div><h4 style="margin-top:10px">DC-3 &amp; cursos especiales</h4><p>Trabajos en alturas, montacargas, espacios confinados, RCP, primeros auxilios y contra incendios.</p></div></div>
-<div class="srv reveal d1"><div><div class="srv-tag">Protección Civil</div><h4 style="margin-top:10px">Programa Interno PC</h4><p>Programas internos, rutas de evacuación, brigadas, simulacros y registro ante autoridad local.</p></div></div>
+<div class="srv reveal d1"><div><div id="servicio-proteccion-civil" class="srv-tag" data-route-anchor tabindex="-1">Protección Civil</div><h4 style="margin-top:10px">Programa Interno PC</h4><p>Programas internos, rutas de evacuación, brigadas, simulacros y registro ante autoridad local.</p></div></div>
 <div class="srv reveal d2"><div><div class="srv-tag">Brigadas</div><h4 style="margin-top:10px">Brigadas de emergencia</h4><p>Formación, equipamiento y certificación de brigadas: incendios, evacuación, primeros auxilios y comunicación.</p></div></div>
 <div class="srv reveal d3"><div><div class="srv-tag">Cumplimiento</div><h4 style="margin-top:10px">Auditorías &amp; cumplimiento de normas</h4><p>Diagnóstico, cierre de brechas y acompañamiento continuo para mantener cada NOM y requisito al día ante la autoridad.</p></div></div>
 </div>

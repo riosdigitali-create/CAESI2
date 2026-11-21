@@ -7,7 +7,8 @@ const menuPanel = document.querySelector("#menuPanel");
 const sections = Array.from(document.querySelectorAll("[data-view]"));
 const tabs = Array.from(document.querySelectorAll("[data-tab]"));
 const views = new Set(tabs.map(tab => tab.dataset.tab));
-const anchoredSections = new Map(sections.filter(section => section.id).map(section => [section.id, section]));
+const anchors = document.querySelectorAll("[data-view][id], [data-route-anchor][id]");
+const anchoredSections = new Map(Array.from(anchors, section => [section.id, section]));
 
 function setMenu(open) {
   menuPanel.hidden = !open;
@@ -36,7 +37,7 @@ function showRoute(hash, animate = false) {
   const anchor = hash.slice(1);
   if (anchor === "contenido") return;
   const section = views.has(anchor) ? null : anchoredSections.get(anchor);
-  const view = views.has(anchor) ? anchor : section?.dataset.view ?? "inicio";
+  const view = views.has(anchor) ? anchor : section?.closest("[data-view]")?.dataset.view ?? "inicio";
   const changed = view !== currentView;
   currentView = view;
   sections.forEach(item => item.classList.toggle("act", item.dataset.view === view));
@@ -49,6 +50,7 @@ function showRoute(hash, animate = false) {
 
   cancelAnimationFrame(routeFrame);
   routeFrame = requestAnimationFrame(() => {
+    measureFilm();
     const behavior = animate && !changed && !reducedMotion.matches ? "smooth" : "instant";
     if (section) section.scrollIntoView({ block: "start", behavior });
     else window.scrollTo({ top: 0, behavior });
@@ -62,7 +64,8 @@ document.addEventListener("click", event => {
   const link = event.target.closest('a[href^="#"]');
   if (!link) return;
   const hash = link.getAttribute("href");
-  if (!views.has(hash.slice(1)) && !anchoredSections.has(hash.slice(1))) return;
+  const destination = anchoredSections.get(hash.slice(1));
+  if (!views.has(hash.slice(1)) && !destination) return;
   event.preventDefault();
   if (menuPanel.contains(link)) {
     setMenu(false);
@@ -70,7 +73,8 @@ document.addEventListener("click", event => {
   }
   if (location.hash !== hash) history.pushState(null, "", hash);
   showRoute(hash, true);
-  if (evaluationDock?.contains(link)) contactSection.querySelector("h2").focus({ preventScroll: true });
+  if (hash === "#contacto") contactSection.querySelector("h2").focus({ preventScroll: true });
+  if (destination?.matches("[data-route-anchor]")) destination.focus({ preventScroll: true });
 });
 window.addEventListener("hashchange", () => showRoute(location.hash));
 document.documentElement.classList.add("view-ready");
@@ -156,7 +160,10 @@ function countUp(element) {
 
 const root = document.documentElement;
 const hero = document.querySelector(".hero-stage");
+const heroLayout = hero.querySelector(".hero-layout");
+const filmSlot = hero.querySelector(".hero-film-slot");
 const heroActions = hero.querySelector(".hero-actions");
+const expandFilm = window.matchMedia("(min-width: 1080px) and (min-height: 720px)");
 const contactSection = document.querySelector("#contacto");
 const evaluationDock = document.querySelector(".evaluation-dock");
 const mobileDock = window.matchMedia("(max-width: 820px)");
@@ -181,15 +188,35 @@ let scrollFrame = 0;
 let observer;
 let previousScrollY = Math.max(0, window.scrollY);
 let scrollDistance = 0;
+let filmTravel = 0;
+let filmScale = 1;
 
-function prepareHeroVisual() {
-  const media = hero.querySelector(".hero-media");
-  const visual = document.createElement("div");
-  visual.className = "hero-visual";
-  visual.setAttribute("aria-hidden", "true");
-  media.before(visual);
-  visual.append(media);
-  hero.classList.add("has-visual");
+function measureFilm() {
+  const layout = heroLayout.getBoundingClientRect();
+  const slot = filmSlot.getBoundingClientRect();
+  const width = Math.min(layout.width, (layout.height - 64) * 16 / 9);
+  const canExpand = expandFilm.matches && !reducedMotion.matches && slot.width > 0 && width > slot.width;
+  hero.classList.toggle("is-expanding", canExpand);
+
+  if (!canExpand) {
+    hero.classList.remove("film-expanded");
+    filmTravel = 0;
+    return;
+  }
+
+  filmScale = width / slot.width;
+  hero.style.setProperty("--film-shift", `${layout.left + (layout.width - width) / 2 - slot.left}px`);
+  hero.style.setProperty("--film-growth", filmScale - 1);
+  filmTravel = hero.offsetHeight - heroLayout.offsetHeight;
+}
+
+function updateFilm() {
+  if (!filmTravel) return;
+  const progress = clamp(-hero.getBoundingClientRect().top / filmTravel);
+  const zoom = progress * progress * (3 - 2 * progress);
+  setProgress(hero, "--cover-progress", zoom);
+  setProgress(hero, "--film-control-scale", 1 / (1 + (filmScale - 1) * zoom));
+  hero.classList.toggle("film-expanded", zoom > .46);
 }
 
 function updateHeader(scrollY) {
@@ -218,15 +245,12 @@ function updateOnScroll() {
   if (!root.classList.contains("motion-ready")) return;
 
   const pageDistance = Math.max(1, root.scrollHeight - viewport);
-  const cover = hero.getBoundingClientRect();
   const track = journeyFeatures.getBoundingClientRect();
   const markerTops = track.height ? journeyMarkers.map(marker => marker.getBoundingClientRect().top) : [];
   const reveals = scrollReveals.map(element => [element, element.getBoundingClientRect()]);
 
   setProgress(root, "--page-progress", scrollY / pageDistance);
-  if (cover.height && cover.bottom > 0) {
-    setProgress(hero, "--cover-progress", (scrollY - 24) / (Math.min(cover.height, viewport) * .59));
-  }
+  updateFilm();
   for (const [element, bounds] of reveals) {
     if (bounds.height) setProgress(element, "--reveal-progress", (viewport * .93 - bounds.top) / (viewport * .29));
   }
@@ -311,7 +335,7 @@ function setupHeroVideo() {
       inView = entry.intersectionRatio >= .15;
       syncPlayback();
     }, { threshold: .15 });
-    visibility.observe(hero);
+    visibility.observe(video.closest(".hero-film"));
   } else {
     syncPlayback();
   }
@@ -321,6 +345,7 @@ function setMotion() {
   if (!("IntersectionObserver" in window)) return;
   const ready = !reducedMotion.matches;
   root.classList.toggle("motion-ready", ready);
+  measureFilm();
   observer?.disconnect();
   if (!ready) return;
 
@@ -340,13 +365,18 @@ function setMotion() {
 }
 
 document.querySelectorAll("[data-line-reveal], [data-letter-reveal]").forEach(prepareHeading);
-prepareHeroVisual();
 reducedMotion.addEventListener("change", setMotion);
 window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
-window.addEventListener("resize", scheduleScrollUpdate, { passive: true });
+window.addEventListener("resize", () => {
+  measureFilm();
+  scheduleScrollUpdate();
+}, { passive: true });
 const optionalDetails = document.querySelector(".lf-optional");
 optionalDetails?.addEventListener("invalid", () => { optionalDetails.open = true; }, true);
-document.fonts?.ready.then(scheduleScrollUpdate);
+document.fonts?.ready.then(() => {
+  measureFilm();
+  scheduleScrollUpdate();
+});
 showRoute(location.hash);
 setMotion();
 setupHeroVideo();
