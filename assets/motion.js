@@ -313,7 +313,7 @@ function setMotion() {
     });
   }, { threshold: .12, rootMargin: "0px 0px -4% 0px" });
 
-  document.querySelectorAll(".reveal, [data-letter-reveal], [data-counter]").forEach(element => {
+  document.querySelectorAll(".reveal, [data-line-reveal], [data-letter-reveal], [data-counter]").forEach(element => {
     if (!element.classList.contains("in")) observer.observe(element);
   });
   scheduleScrollUpdate();
