@@ -114,7 +114,10 @@ function prepareServices(overview) {
 
 function prepareHero(hero) {
   hero.querySelector(".hero-kicker").textContent = "Consultoría industrial";
-  hero.querySelector("h1").innerHTML = "Cumplimiento industrial.<br><em>Defensa ante la STPS.</em>";
+  const title = hero.querySelector("h1");
+  title.innerHTML = "Cumplimiento industrial.<br><em>Defensa ante la STPS.</em>";
+  title.removeAttribute("data-letter-reveal");
+  hero.querySelectorAll(".hero-copy .reveal").forEach(element => element.classList.remove("reveal"));
   hero.querySelector(".hero-sub").textContent =
     "Revisamos multas de la STPS y te ayudamos a organizar tus expedientes de seguridad laboral, Protección Civil y Medio Ambiente.";
 
