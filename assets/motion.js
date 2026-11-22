@@ -4,19 +4,19 @@ document.documentElement.classList.add("view-ready");
 
 const homepageStyles = document.createElement("link");
 homepageStyles.rel = "stylesheet";
-homepageStyles.href = new URL("./home.css?v=1", document.currentScript.src).href;
+homepageStyles.href = new URL("./home.css?v=2", document.currentScript.src).href;
 const stylesReady = new Promise((resolve, reject) => {
   homepageStyles.addEventListener("load", resolve, { once: true });
   homepageStyles.addEventListener("error", reject, { once: true });
 });
 document.head.append(homepageStyles);
 
-Promise.all([import("./home.js?v=1"), stylesReady])
+Promise.all([import("./home.js?v=2"), stylesReady])
   .then(([{ enhanceHome }]) => enhanceHome())
   .catch(() => homepageStyles.remove())
-  .finally(initializeSite);
+  .then(initializeSite);
 
-function initializeSite() {
+function initializeSite(setContactTopic) {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const siteHeader = document.querySelector(".site-header");
   const menuButton = document.querySelector("#menuToggle");
@@ -55,6 +55,7 @@ function initializeSite() {
     if (anchor === "contenido") return;
     const section = views.has(anchor) ? null : anchoredSections.get(anchor);
     const view = views.has(anchor) ? anchor : section?.closest("[data-view]")?.dataset.view ?? "inicio";
+    if (section?.closest("#contacto")) setContactTopic?.(section.dataset.leadTopic ?? "evaluacion");
     const changed = view !== currentView;
     currentView = view;
     sections.forEach(item => item.classList.toggle("act", item.dataset.view === view));
@@ -90,8 +91,8 @@ function initializeSite() {
     }
     if (location.hash !== hash) history.pushState(null, "", hash);
     showRoute(hash, true);
-    if (hash === "#contacto") contactSection.querySelector("h2").focus({ preventScroll: true });
-    if (destination?.matches("[data-route-anchor]")) destination.focus({ preventScroll: true });
+    if (destination?.closest("#contacto")) contactSection.querySelector("h2").focus({ preventScroll: true });
+    else if (destination?.matches("[data-route-anchor]")) destination.focus({ preventScroll: true });
   });
   window.addEventListener("hashchange", () => showRoute(location.hash));
 
