@@ -1,6 +1,7 @@
 "use strict";
 
 document.documentElement.classList.add("view-ready");
+playBrandIntro();
 
 const homepageStyles = document.createElement("link");
 homepageStyles.rel = "stylesheet";
@@ -11,10 +12,63 @@ const stylesReady = new Promise((resolve, reject) => {
 });
 document.head.append(homepageStyles);
 
-Promise.all([import("./home.js?v=2"), stylesReady])
+Promise.all([import("./home.js?v=3"), stylesReady])
   .then(([{ enhanceHome }]) => enhanceHome())
   .catch(() => homepageStyles.remove())
   .then(initializeSite);
+
+function playBrandIntro() {
+  if (document.hidden || window.scrollY > 4 || (location.hash && location.hash !== "#inicio")) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const logo = document.querySelector(".site-header .logo");
+  if (!logo?.animate) return;
+  const bounds = logo.getBoundingClientRect();
+  if (!bounds.width || !bounds.height) return;
+
+  const cover = document.createElement("div");
+  cover.className = "brand-intro";
+  cover.setAttribute("aria-hidden", "true");
+  const mark = document.createElement("div");
+  mark.className = "logo brand-intro-logo";
+  mark.append(...Array.from(logo.children, child => child.cloneNode(true)));
+  cover.append(mark);
+  document.body.append(cover);
+  if (getComputedStyle(cover).position !== "fixed") {
+    cover.remove();
+    return;
+  }
+
+  const scale = Math.min(2.08, (cover.clientWidth - 48) / bounds.width);
+  const startX = (cover.clientWidth - bounds.width * scale) / 2;
+  const startY = (cover.clientHeight - bounds.height * scale) / 2;
+  const center = `translate(${startX}px, ${startY}px) scale(${scale})`;
+  const destination = `translate(${bounds.left}px, ${bounds.top}px) scale(1)`;
+  const root = document.documentElement;
+  root.classList.add("brand-intro-active");
+
+  const flight = mark.animate([
+    { transform: center, opacity: 1, offset: 0 },
+    { transform: center, opacity: .36, offset: .14 },
+    { transform: center, opacity: 1, offset: .33, easing: "cubic-bezier(.72, 0, .18, 1)" },
+    { transform: destination, opacity: 1, offset: 1 }
+  ], { duration: 760, fill: "both" });
+  const events = new AbortController();
+  const options = { once: true, signal: events.signal };
+
+  function finish() {
+    events.abort();
+    root.classList.remove("brand-intro-active");
+    cover.remove();
+    flight.cancel();
+  }
+
+  flight.addEventListener("finish", finish, options);
+  window.addEventListener("hashchange", finish, options);
+  window.addEventListener("resize", finish, options);
+  window.addEventListener("pagehide", finish, options);
+  document.addEventListener("pointerdown", finish, options);
+}
 
 function initializeSite(setContactTopic) {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -315,6 +369,7 @@ function initializeSite(setContactTopic) {
     const toggle = document.querySelector(".hero-video-toggle");
     const footerActions = document.querySelector(".colab-link")?.parentElement;
     if (!video || !toggle || !footerActions) return;
+    const poster = video.parentElement.querySelector(".hero-image");
 
     // Keep the pause control in the footer so the film itself stays unobstructed.
     toggle.className = "hero-motion-toggle";
@@ -324,6 +379,7 @@ function initializeSite(setContactTopic) {
 
     const source = new URL(video.dataset.src, document.baseURI);
     source.searchParams.set("v", "4");
+    const compactSource = new URL("auditoria-portada-movil.mp4", source);
 
     const connection = navigator.connection;
     let choice = "auto";
@@ -337,11 +393,11 @@ function initializeSite(setContactTopic) {
       const enabled = playbackEnabled();
       const label = enabled ? "Pausar video de portada" : "Activar video de portada";
       if (toggle.textContent !== label) toggle.textContent = label;
-      if (!inView || document.hidden || !enabled) {
+      if (!inView || document.hidden || !enabled || (poster && !poster.complete)) {
         video.pause();
         return;
       }
-      if (!video.hasAttribute("src")) video.src = source.href;
+      if (!video.hasAttribute("src")) video.src = mobileDock.matches ? compactSource.href : source.href;
       if (video.paused) video.play().catch(() => {});
     }
 
@@ -355,6 +411,8 @@ function initializeSite(setContactTopic) {
       syncPlayback();
     });
     document.addEventListener("visibilitychange", syncPlayback);
+    poster?.addEventListener("load", syncPlayback, { once: true });
+    poster?.addEventListener("error", syncPlayback, { once: true });
     reducedMotion.addEventListener("change", syncPlayback);
     connection?.addEventListener?.("change", syncPlayback);
     toggle.hidden = false;

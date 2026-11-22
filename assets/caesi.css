@@ -148,6 +148,40 @@ main:focus { outline: none; }
 .logo img { width: 45px; height: auto; }
 .brand-name { font-size: 1.42rem; letter-spacing: -.035em; font-weight: 800; }
 .brand-name small { display: block; margin-top: .22rem; color: var(--muted); font-size: .75rem; font-weight: 650; letter-spacing: .02em; }
+
+.brand-intro {
+  position: fixed;
+  z-index: 19;
+  inset: 0;
+  pointer-events: none;
+  overflow: clip;
+}
+.brand-intro::before, .brand-intro::after {
+  position: absolute;
+  inset-block: 0;
+  width: calc(50% + 1px);
+  background: #f2f7f3;
+  animation: brand-open .49s var(--ease) .25s both;
+  content: "";
+}
+.brand-intro::before { left: 0; transform-origin: left; }
+.brand-intro::after { right: 0; transform-origin: right; }
+.brand-intro-logo {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  color: var(--ink);
+  white-space: nowrap;
+  transform-origin: top left;
+}
+.brand-intro-active .site-header .logo { opacity: 0; }
+@keyframes brand-open { to { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .brand-intro { display: none; }
+  .brand-intro-active .site-header .logo { opacity: 1; }
+}
+
 .desktop-nav { display: flex; align-items: stretch; align-self: stretch; gap: clamp(.9rem, 2.15vw, 2.45rem); }
 .tab-link { position: relative; display: flex; align-items: center; font-size: .9375rem; font-weight: 600; white-space: nowrap; }
 .tab-link:hover, .tab-link.act { color: var(--teal); }
